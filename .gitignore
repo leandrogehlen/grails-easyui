@@ -37,3 +37,6 @@
 
 # other
 *.iws
+
+plugin.xml
+.settings
