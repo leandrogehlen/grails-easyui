@@ -39,3 +39,4 @@
 *.iws
 
 plugin.xml
+.settings
