@@ -1,0 +1,18 @@
+<plugin name='geasyui' version='0.1' grailsVersion='2.1 &gt; *'>
+  <author>Leandro Guindani Gehlen</author>
+  <authorEmail>leandrogehlen@gmail.com</authorEmail>
+  <title>JQuery EasyUI form Grails</title>
+  <description>Supplies EasyUI resources, depends on jQuery plugin. See http://www.jeasyui.com/</description>
+  <documentation>http://grails.org/plugin/geasy-ui</documentation>
+  <type>GeasyuiGrailsPlugin</type>
+  <resources>
+    <resource>GeasyuiPluginResources</resource>
+    <resource>org.grails.plugins.geasyui.EasyUITagLib</resource>
+    <resource>org.grails.plugins.geasyui.HtmlUtil</resource>
+  </resources>
+  <repositories />
+  <dependencies />
+  <plugins />
+  <runtimePluginRequirements />
+  <behavior />
+</plugin>
