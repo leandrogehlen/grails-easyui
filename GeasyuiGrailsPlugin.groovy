@@ -1,8 +1,7 @@
 class GeasyuiGrailsPlugin {
 
-    def version = "0.1"	
-    def grailsVersion = "2.1 > *"
-    def dependsOn = [:]
+    def version = "0.1"
+    def grailsVersion = "2.0 > *"
 
     def pluginExcludes = [
         "web-app/css",
