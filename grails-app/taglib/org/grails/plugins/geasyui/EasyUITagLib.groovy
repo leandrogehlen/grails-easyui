@@ -1,52 +1,51 @@
 package org.grails.plugins.geasyui
 
-
 class EasyUITagLib {
-	
+
 	private static final String ATTR_TAG = "tag"
 	private static final String ATTR_EVENTS = "events"
-	private static final String ATTR_STYLE = "style"	
-	
+	private static final String ATTR_STYLE = "style"
+
 	static namespace = "eui"
-	
-	static styleAttrs = ["width", "height"] as Set	
-	
-	void doTag(attrs, body, String tag, String className = null){			
-		
+
+	private static Set styleAttrs = ["width", "height"]
+
+	void doTag(attrs, body, String tag, String className = null){
+
 		def cls = (className)? " class=\"easyui-$className\"" : ""
-		def result = body.call()		
-				
+		def result = body.call()
+
 		if (attrs[ATTR_TAG])
-			tag = attrs.remove(ATTR_TAG)					
-		 						
+			tag = attrs.remove(ATTR_TAG)
+
 		def style = attrs.findAll{k,v -> styleAttrs.contains(k) }
-		style = HtmlUtil.cssEncode(style)  
-		
+		style = HtmlUtil.cssEncode(style)
+
 		if (attrs[ATTR_STYLE])
 			style += attrs.remove(ATTR_STYLE)
-			
+
 		def attributes = attrs.findAll {k,v->  HtmlUtil.isHtmlAttribute(k) }
-		attributes = HtmlUtil.tagEncode(attributes)		
-									
+		attributes = HtmlUtil.tagEncode(attributes)
+
 		def options = attrs.findAll {k,v-> !styleAttrs.contains(k) && !HtmlUtil.isHtmlAttribute(k) }
 		options = HtmlUtil.jsEncode(options)
-				
-		def events = request.getAttribute(ATTR_EVENTS)		
+
+		def events = request.getAttribute(ATTR_EVENTS)
 		if (events) {
 			def js = HtmlUtil.jsEncode( events.collectEntries{ [(it.name) : it.toString()] } )
-			options = (options) ? "$options,$js" : js 
+			options = (options) ? "$options,$js" : js
 			events.clear()
 		}
-													
+
 		style = (style) ? " style=\"$style\"" : ""
 		options = (options)? " data-options=\"$options\"" : ""
 		attributes = (attributes)? " $attributes" : ""
-						
-		out << "<$tag$attributes$cls$options$style>"		
-		out << result			
-		out << "</$tag>"			
-	}	
-	
+
+		out << "<$tag$attributes$cls$options$style>"
+		out << result
+		out << "</$tag>"
+	}
+
 	/**
 	 * @attr id
 	 * @attr total
@@ -63,18 +62,18 @@ class EasyUITagLib {
 	def pagination = { attrs, body ->
 		doTag(attrs, body, "div", "pagination")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr width
 	 * @attr prompt
 	 * @attr value
-	 * @attr menu	 
+	 * @attr menu
 	 */
 	def searchbox = { attrs, body ->
 		doTag(attrs, body, "input", "searchbox")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr width
@@ -84,15 +83,15 @@ class EasyUITagLib {
 	def progressbar = { attrs, body ->
 		doTag(attrs, body, "div", "progressbar")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr title
 	 * @attr width
-	 * @attr height 
-	 * @attr left 
+	 * @attr height
+	 * @attr left
 	 * @attr top
-	 * @attr cls 
+	 * @attr cls
 	 * @attr headerCls
 	 * @attr bodyCls
 	 * @attr border
@@ -100,7 +99,7 @@ class EasyUITagLib {
 	 * @attr noheader
 	 * @attr content
 	 * @attr collapsible
-	 * @attr minimizable   
+	 * @attr minimizable
 	 * @attr maximizable
 	 * @attr closable
 	 * @attr tools
@@ -108,7 +107,7 @@ class EasyUITagLib {
 	 * @attr minimized
 	 * @attr maximized
 	 * @attr closed
-	 * @attr href   
+	 * @attr href
 	 * @attr cache
 	 * @attr loadingMessage
 	 * @attr extractor
@@ -116,8 +115,8 @@ class EasyUITagLib {
 	def panel = { attrs, body ->
 		doTag(attrs, body, "div", "panel")
 	}
-	
-	
+
+
 	/**
 	 * @attr id
 	 * @attr width
@@ -127,12 +126,12 @@ class EasyUITagLib {
 	 * @attr border
 	 * @attr scrollIncrement
 	 * @attr scrollDuration
-	 * @attr tools	 
+	 * @attr tools
 	 */
 	def tabs = { attrs, body ->
 		doTag(attrs, body, "div", "tabs")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr title
@@ -141,10 +140,10 @@ class EasyUITagLib {
 	 * @attr cache
 	 * @attr width
 	 * @attr height
-	 */	
+	 */
 	def tabpanel = { attrs, body ->
 		doTag(attrs, body, "div")
-	}	
+	}
 
 	/**
 	 * @attr id
@@ -160,43 +159,43 @@ class EasyUITagLib {
 	def accordion = { attrs, body ->
 		doTag(attrs, body, "div", "accordion")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr title
 	 * @attr width
 	 * @attr height
 	 * @attr fit
-	 * @attr border	
-	 * @attr animate	
+	 * @attr border
+	 * @attr animate
 	 */
 	def item = { attrs, body ->
 		doTag(attrs, body, "div")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr fit
-	 * @attr tag	
+	 * @attr tag
 	 */
 	def layout = { attrs, body ->
 		doTag(attrs, body, "body", "layout")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr title
 	 * @attr region
 	 * @attr border
 	 * @attr split
-	 * @attr iconCls	
-	 * @attr href		
+	 * @attr iconCls
+	 * @attr href
 	 */
 	def north = { attrs, body ->
 		attrs["region"] = "north"
 		doTag(attrs, body, "div")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr title
@@ -210,7 +209,7 @@ class EasyUITagLib {
 		attrs["region"] = "west"
 		doTag(attrs, body, "div")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr title
@@ -224,7 +223,7 @@ class EasyUITagLib {
 		attrs["region"] = "south"
 		doTag(attrs, body, "div")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr title
@@ -238,7 +237,7 @@ class EasyUITagLib {
 		attrs["region"] = "east"
 		doTag(attrs, body, "div")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr title
@@ -252,7 +251,7 @@ class EasyUITagLib {
 		attrs["region"] = "center"
 		doTag(attrs, body, "div")
 	}
-	
+
 	/**
 	 * @attr name
 	 * @attr params
@@ -260,23 +259,23 @@ class EasyUITagLib {
 	def event = { attrs, body ->
 		def events = request.getAttribute(ATTR_EVENTS)
 		if(!events) {
-			events = new LinkedList<JsEvent>()		
-			request.setAttribute(ATTR_EVENTS, events)			
-		}		
-		events.push(new JsEvent(attrs["name"], body()))		
+			events = new LinkedList<JsEvent>()
+			request.setAttribute(ATTR_EVENTS, events)
+		}
+		events.push(new JsEvent(attrs["name"], body()))
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr disabled
 	 * @attr plain
 	 * @attr text
-	 * @attr iconCls	 
+	 * @attr iconCls
 	 */
 	def linkbutton = { attrs, body ->
 		doTag(attrs, body, "a", "linkbutton")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr plain
@@ -286,7 +285,7 @@ class EasyUITagLib {
 	def menubutton = { attrs, body ->
 		doTag(attrs, body, "a", "menubutton")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr plain
@@ -296,7 +295,7 @@ class EasyUITagLib {
 	def splitbutton = { attrs, body ->
 		doTag(attrs, body, "a", "splitbutton")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr url
@@ -304,8 +303,8 @@ class EasyUITagLib {
 	def form = { attrs, body ->
 		doTag(attrs, body, "form")
 	}
-	
-	
+
+
 	/**
 	 * @attr id
 	 * @attr required
@@ -316,7 +315,7 @@ class EasyUITagLib {
 	def validatebox = { attrs, body ->
 		doTag(attrs, body, "input", "validatebox")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr width
@@ -334,7 +333,7 @@ class EasyUITagLib {
 	def combo = { attrs, body ->
 		doTag(attrs, body, "input", "combo")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr width
@@ -361,7 +360,7 @@ class EasyUITagLib {
 	def combobox = { attrs, body ->
 		doTag(attrs, body, "select", "combobox")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr width
@@ -375,12 +374,12 @@ class EasyUITagLib {
 	 * @attr value
 	 * @attr delay
 	 * @attr keyHandler
-	 * @attr editable	
+	 * @attr editable
 	 */
 	def combotree = { attrs, body ->
 		doTag(attrs, body, "select", "combotree")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr width
@@ -402,15 +401,15 @@ class EasyUITagLib {
 	def combogrid = { attrs, body ->
 		doTag(attrs, body, "select", "combogrid")
 	}
-	
-	
+
+
 	/**
 	 * @attr id
 	 * @attr required
 	 * @attr validType
 	 * @attr disabled
-	 * @attr value	
-	 * @attr min	
+	 * @attr value
+	 * @attr min
 	 * @attr max
 	 * @attr precision
 	 * @attr decimalSeparator
@@ -423,7 +422,7 @@ class EasyUITagLib {
 	def numberbox = { attrs, body ->
 		doTag(attrs, body, "input", "numberbox")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr width
@@ -434,12 +433,12 @@ class EasyUITagLib {
 	 * @attr okText
 	 * @attr disabled
 	 * @attr formatter
-	 * @attr parser	 
+	 * @attr parser
 	 */
 	def datebox = { attrs, body ->
 		doTag(attrs, body, "input", "datebox")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr width
@@ -457,7 +456,7 @@ class EasyUITagLib {
 	def datetimebox = { attrs, body ->
 		doTag(attrs, body, "input", "datetimebox")
 	}
-		
+
 	/**
 	 * @attr id
 	 * @attr width
@@ -474,8 +473,8 @@ class EasyUITagLib {
 	def calendar = { attrs, body ->
 		doTag(attrs, body, "div", "calendar")
 	}
-	
-	
+
+
 	/**
 	 * @attr id
 	 * @attr required
@@ -494,7 +493,7 @@ class EasyUITagLib {
 	def spinner = { attrs, body ->
 		doTag(attrs, body, "input", "spinner")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr required
@@ -513,7 +512,7 @@ class EasyUITagLib {
 	def numberspinner = { attrs, body ->
 		doTag(attrs, body, "input", "numberspinner")
 	}
-		
+
 	/**
 	 * @attr id
 	 * @attr required
@@ -534,8 +533,8 @@ class EasyUITagLib {
 	 */
 	def timespinner = { attrs, body ->
 		doTag(attrs, body, "input", "timespinner")
-	}	
-	
+	}
+
 	/**
 	 * @attr id
 	 * @attr width
@@ -553,7 +552,7 @@ class EasyUITagLib {
 	def slider = { attrs, body ->
 		doTag(attrs, body, "input", "slider")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr title
@@ -586,12 +585,12 @@ class EasyUITagLib {
 	 * @attr shadow
 	 * @attr inline
 	 * @attr modal
-	 * 
+	 *
 	 */
 	def window = { attrs, body ->
 		doTag(attrs, body, "div", "window")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr title
@@ -630,7 +629,7 @@ class EasyUITagLib {
 	def dialog = { attrs, body ->
 		doTag(attrs, body, "div", "dialog")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr title
@@ -667,21 +666,21 @@ class EasyUITagLib {
 	 * @attr scrollbarSize
 	 * @attr rowStyler
 	 * @attr loader
-	 * @attr loadFilter	
+	 * @attr loadFilter
 	 * @attr editors
 	 * @attr view
 	 */
 	def datgrid = { attrs, body ->
 		doTag(attrs, body, "div", "datgrid")
 	}
-	
-	
+
+
 	def columns = { attrs, body ->
 		out << "<thead>"
 		doTag(attrs, body, "div", "panel")
 		out << "</thead>"
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr title
@@ -697,12 +696,12 @@ class EasyUITagLib {
 	 * @attr toolbar
 	 * @attr styler
 	 * @attr sorter
-	 * @attr editor	 
+	 * @attr editor
 	 */
-	def column = { attrs, body ->		
-		doTag(attrs, body, "th")		
+	def column = { attrs, body ->
+		doTag(attrs, body, "th")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr title
@@ -748,8 +747,8 @@ class EasyUITagLib {
 	def propertygrid = { attrs, body ->
 		doTag(attrs, body, "div", "propertygrid")
 	}
-	
-	
+
+
 	/**
 	 * @attr id
 	 * @attr url
@@ -767,7 +766,7 @@ class EasyUITagLib {
 	def tree = { attrs, body ->
 		doTag(attrs, body, "div", "tree")
 	}
-	
+
 	/**
 	 * @attr id
 	 * @attr title
@@ -815,27 +814,27 @@ class EasyUITagLib {
 	def treegrid = { attrs, body ->
 		doTag(attrs, body, "div", "treegrid")
 	}
-		
+
 	private class JsEvent {
-		String name	
-		String params	
+		String name
+		String params
 		String script
 
 		JsEvent(String name, String script) {
-			super()		
-							
+			super()
+
 			def m = name =~ /(\w+)\s*\((.*?)\)/
 			if (!m.matches())
 				throwTagError "Invalid attribute [name] of tag [event]"
-			
+
 			this.name = m[0][1]
 			this.params = m[0][2]
-			this.script = script			
-		}			
-								
-		String toString() {						
+			this.script = script
+		}
+
+		String toString() {
 			return "function(${params}){ ${script} }"
-		}			
+		}
 	}
-	
+
 }
