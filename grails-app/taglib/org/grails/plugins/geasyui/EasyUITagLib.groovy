@@ -6,7 +6,7 @@ class EasyUITagLib {
 	private static final String ATTR_EVENTS = "events"
 	private static final String ATTR_STYLE = "style"
 
-	static namespace = "eui"
+	static namespace = "e"
 
 	private static Set styleAttrs = ["width", "height"]
 
