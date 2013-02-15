@@ -16,13 +16,16 @@ Usage
 -----
 
     <r:require modules="easyui"/>
+    <r:layoutResources />
     
 Hello World!
 ------------
   
     <html>
     <head>
-        <title>Hello World Demo</title>        
+        <title>Hello World Demo</title>
+        <r:require module="easyui"/>    			
+		<r:layoutResources />
     </head>
 
     <body>
@@ -31,5 +34,5 @@ Hello World!
     </e:window>
     </body>
     </html>
-    
+
 ![Hello World](https://jquery-easyui.googlecode.com/svn/trunk/share/tutorial/window/win1_1.png)
