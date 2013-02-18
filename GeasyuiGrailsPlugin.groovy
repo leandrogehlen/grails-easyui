@@ -11,7 +11,7 @@ class GeasyuiGrailsPlugin {
 	"web-app/js/application.js"
     ]
 
-    def title = "JQuery EasyUI form Grails"
+    def title = "JQuery EasyUI from Grails"
     def author = "Leandro Guindani Gehlen"
     def authorEmail = "leandrogehlen@gmail.com"
     def description = "Supplies jQuery EasyUI resources and taglibs. Depends on jQuery EasyUI plugin. See http://www.jeasyui.com/"
