@@ -10,7 +10,7 @@ class EasyUITagLib {
 
 	private static Set styleAttrs = ["width", "height"]
 
-	void doTag(attrs, body, String tag, String className = null){
+	void doTag(attrs, body, String tag, String className = null, Boolean ignoreStyleAttrs = false){
 
 		def cls = (className)? " class=\"easyui-$className\"" : ""
 		def result = body.call()
@@ -18,7 +18,7 @@ class EasyUITagLib {
 		if (attrs[ATTR_TAG])
 			tag = attrs.remove(ATTR_TAG)
 
-		def style = attrs.findAll{k,v -> styleAttrs.contains(k) }
+		def style = (!ignoreStyleAttrs) ? attrs.findAll{k,v -> styleAttrs.contains(k) } : []
 		style = HtmlUtil.cssEncode(style)
 
 		if (attrs[ATTR_STYLE])
@@ -27,7 +27,7 @@ class EasyUITagLib {
 		def attributes = attrs.findAll {k,v->  HtmlUtil.isHtmlAttribute(k) }
 		attributes = HtmlUtil.tagEncode(attributes)
 
-		def options = attrs.findAll {k,v-> !styleAttrs.contains(k) && !HtmlUtil.isHtmlAttribute(k) }
+		def options = attrs.findAll {k,v-> (ignoreStyleAttrs || !styleAttrs.contains(k)) && !HtmlUtil.isHtmlAttribute(k) }
 		options = HtmlUtil.jsEncode(options)
 
 		def events = request.getAttribute(ATTR_EVENTS)
@@ -262,7 +262,8 @@ class EasyUITagLib {
 			events = new LinkedList<JsEvent>()
 			request.setAttribute(ATTR_EVENTS, events)
 		}
-		events.push(new JsEvent(attrs["name"], body()))
+		def content = body()
+		events.push(new JsEvent(attrs["name"], content))
 	}
 
 	/**
@@ -670,14 +671,16 @@ class EasyUITagLib {
 	 * @attr editors
 	 * @attr view
 	 */
-	def datgrid = { attrs, body ->
-		doTag(attrs, body, "div", "datgrid")
+	def datagrid = { attrs, body ->
+		doTag(attrs, body, "table", "datagrid")
 	}
 
 
 	def columns = { attrs, body ->
 		out << "<thead>"
-		doTag(attrs, body, "div", "panel")
+		out << "<tr>"		
+		out << body.call()
+		out << "</tr>"
 		out << "</thead>"
 	}
 
@@ -699,7 +702,7 @@ class EasyUITagLib {
 	 * @attr editor
 	 */
 	def column = { attrs, body ->
-		doTag(attrs, body, "th")
+		doTag(attrs, body, "th", null, true)
 	}
 
 	/**
@@ -821,8 +824,6 @@ class EasyUITagLib {
 		String script
 
 		JsEvent(String name, String script) {
-			super()
-
 			def m = name =~ /(\w+)\s*\((.*?)\)/
 			if (!m.matches())
 				throwTagError "Invalid attribute [name] of tag [event]"
