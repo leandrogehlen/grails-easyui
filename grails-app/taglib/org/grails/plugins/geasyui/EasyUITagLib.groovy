@@ -689,6 +689,7 @@ class EasyUITagLib {
 	 * @attr title
 	 * @attr field
 	 * @attr width
+	 * @attr height
 	 * @attr rowspan
 	 * @attr colspan
 	 * @attr align
@@ -702,6 +703,12 @@ class EasyUITagLib {
 	 * @attr editor
 	 */
 	def column = { attrs, body ->
+		if (attrs.width)
+			attrs.width = attrs.width as Integer 
+		
+		if (attrs.height)
+			attrs.height = attrs.height as Integer
+		
 		doTag(attrs, body, "th", null, true)
 	}
 

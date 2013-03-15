@@ -34,7 +34,8 @@ class HtmlUtil {
 
 	static String jsEncode(attrs){
 		attrs.collect{k,v->
-			def value = (v == "true" || v == "false" || v.startsWith("function")) ? v : "'$v'"
+			boolean nonQuoted = (!(v instanceof String) || v == "true" || v == "false" || v.startsWith("function"))
+			def value = (nonQuoted) ? v : "'$v'"
 			"$k:$value"
 		}.join(",")
 	}
