@@ -2,6 +2,8 @@ package org.grails.plugins.geasyui
 
 import javax.swing.text.html.HTML
 
+import org.apache.commons.lang.StringUtils
+
 class HtmlUtil {
 
 	private static ignoreAttrs = ["prompt", "title", "height", "width"] as Set
@@ -34,7 +36,12 @@ class HtmlUtil {
 
 	static String jsEncode(attrs){
 		attrs.collect{k,v->
-			boolean nonQuoted = (!(v instanceof String) || v == "true" || v == "false" || v.startsWith("function"))
+			String[] js = ["function", "js:"]
+			boolean nonQuoted = (!(v instanceof String) || v == "true" || v == "false" || StringUtils.startsWithAny(v, js))
+			
+			if (v instanceof String && v.startsWith("js:"))
+				v = v.substring(3)
+				
 			def value = (nonQuoted) ? v : "'$v'"
 			"$k:$value"
 		}.join(",")
