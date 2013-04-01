@@ -1,6 +1,6 @@
 class GeasyuiGrailsPlugin {
 
-    def version = "0.7"
+    def version = "0.8"
     def grailsVersion = "2.0 > *"    
     def dependsOn = [:]
 
