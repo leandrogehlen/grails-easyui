@@ -58,23 +58,22 @@ public class EasyuiDomainClassMarshaller implements ObjectMarshaller<JSON> {
 		return application.isArtefactOfType(DomainClassArtefactHandler.TYPE, name);
 	}
 	
-	protected String concatPropertyName(String className, String propertyName)
+	protected String concatPropertyName(String parentName, String propertyName)
     {
-        String result = className == null ? propertyName : (new StringBuilder(String.valueOf(className))).append("_").append(propertyName).toString();
-        return result.toLowerCase();
+		return parentName == null ? propertyName : parentName.concat("_").concat(propertyName);        
     }
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-    protected void writeProperties(Object obj, JSON json, String className) {
+    protected void writeProperties(Object obj, JSON json, String parentName) {
         JSONWriter writer = json.getWriter();
         obj = proxyHandler.unwrapIfProxy(obj);
         Class<?> clazz = obj.getClass();
         GrailsDomainClass domainClass = (GrailsDomainClass)application.getArtefact("Domain", ConverterUtil.trimProxySuffix(clazz.getName()));
         GrailsDomainClassProperty id = domainClass.getIdentifier();
         Object idValue = extractValue(obj, id);
-        json.property(concatPropertyName(className, "id"), idValue);
+        json.property(concatPropertyName(parentName, "id"), idValue);
         
-        if(className == null && isIncludeVersion()) {
+        if(parentName == null && isIncludeVersion()) {
             GrailsDomainClassProperty versionProperty = domainClass.getVersion();
             Object version = extractValue(obj, versionProperty);
             if(version != null) {
@@ -87,7 +86,7 @@ public class EasyuiDomainClassMarshaller implements ObjectMarshaller<JSON> {
         for (GrailsDomainClassProperty property : properties) {
         
             if(!property.isAssociation()) {
-                writer.key(concatPropertyName(className, property.getName()));
+                writer.key(concatPropertyName(parentName, property.getName()));
                 Object val = beanWrapper.getPropertyValue(property.getName());
                 json.convertAnother(val);
             } 
@@ -124,7 +123,8 @@ public class EasyuiDomainClassMarshaller implements ObjectMarshaller<JSON> {
                         json.convertAnother(referenceObject);
                     } 
                     else if(property.isOneToOne() || property.isManyToOne() || property.isEmbedded()) {
-                        writeProperties(referenceObject, json, referencedDomainClass.getName());
+                    	String prefix = (parentName != null) ? parentName.concat("_") : "";
+                        writeProperties(referenceObject, json, prefix + property.getName());
                     }
                 }
             }
