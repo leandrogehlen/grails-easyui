@@ -1,8 +1,8 @@
-package org.grails.plugins.geasyui
+package org.grails.plugins.easyui
 
 import grails.util.Holders
 
-class GEasyuiConfig {
+class EasyuiConfig {
 
 	static ConfigObject getConfig() {
 		Holders.grailsApplication.config.grails.plugin.geasyui

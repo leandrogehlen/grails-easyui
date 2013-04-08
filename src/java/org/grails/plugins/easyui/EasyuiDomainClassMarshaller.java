@@ -1,4 +1,4 @@
-package org.grails.plugins.geasyui;
+package org.grails.plugins.easyui;
 
 import grails.converters.JSON;
 

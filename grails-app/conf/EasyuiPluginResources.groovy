@@ -1,11 +1,10 @@
-import org.grails.plugins.geasyui.GEasyuiConfig
+import org.grails.plugins.easyui.EasyuiConfig
 
-def theme = GEasyuiConfig.theme
-def locale = GEasyuiConfig.locale
-def jqver = GEasyuiConfig.jqueryVersion
+def theme = EasyuiConfig.theme
+def locale = EasyuiConfig.locale
+def jqver = EasyuiConfig.jqueryVersion
 
 modules = {
-
 	easyui {
 		resource url: "js/jquery-easyui/themes/icon.css", disposition: 'head'
 		resource url: "js/jquery-easyui/themes/${theme}/easyui.css", disposition: 'head'

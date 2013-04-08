@@ -1,9 +1,11 @@
-package org.grails.plugins.geasyui
+package org.grails.plugins.easyui
+
+import org.grails.plugins.easyui.EasyuiTagLib;
 
 import grails.test.mixin.TestFor
 
-@TestFor(EasyUITagLib)
-class EasyUITagLibTests {
+@TestFor(EasyuiTagLib)
+class EasyuiTagLibTests {
 
     void testBasicTag() {
 		assert '<div class="easyui-panel"></div>' == applyTemplate('<e:panel/>')

@@ -1,4 +1,4 @@
-package org.grails.plugins.geasyui
+package org.grails.plugins.easyui
 
 import javax.swing.text.html.HTML
 

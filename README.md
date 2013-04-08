@@ -1,5 +1,5 @@
-GEasyUI
-=======
+Grails EasyUI
+=============
 
 Provides jQuery EasyUI framework resource files and taglibs.
 

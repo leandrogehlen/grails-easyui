@@ -1,6 +1,6 @@
-package org.grails.plugins.geasyui
+package org.grails.plugins.easyui
 
-class EasyUITagLib {
+class EasyuiTagLib {
 
 	private static final String ATTR_TAG = "tag"
 	private static final String ATTR_EVENTS = "events"
