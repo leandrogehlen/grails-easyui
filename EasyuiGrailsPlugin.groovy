@@ -15,7 +15,7 @@ class EasyuiGrailsPlugin {
     def author = "Leandro Guindani Gehlen"
     def authorEmail = "leandrogehlen@gmail.com"
     def description = "Supplies jQuery EasyUI resources and taglibs. Depends on jQuery EasyUI plugin. See http://www.jeasyui.com/"
-    def documentation = "http://grails.org/plugin/grails-easyui"
+    def documentation = "http://grails.org/plugin/easyui"
         
     def license = "LGPL"    
     def issueManagement = [system: "github", url: "https://github.com/leandrogehlen/grails-easyui/issues"]
