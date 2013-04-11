@@ -13,6 +13,7 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.codehaus.groovy.grails.commons.DomainClassArtefactHandler;
 import org.codehaus.groovy.grails.commons.GrailsApplication;
 import org.codehaus.groovy.grails.commons.GrailsClassUtils;
@@ -88,6 +89,8 @@ public class EasyuiDomainClassMarshaller implements ObjectMarshaller<JSON> {
             if(!property.isAssociation()) {
                 writer.key(concatPropertyName(parentName, property.getName()));
                 Object val = beanWrapper.getPropertyValue(property.getName());
+                if (val instanceof Boolean)
+                	val = BooleanUtils.toStringTrueFalse((Boolean) val);
                 json.convertAnother(val);
             } 
             else {
