@@ -1,14 +1,12 @@
 class EasyuiGrailsPlugin {
 
-    def version = "0.9"
+    def version = "1.0"
     def grailsVersion = "2.0 > *"    
     def dependsOn = [:]
 
     def pluginExcludes = [
         "web-app/css",
-		"web-app/images",
-		"web-app/js/prototype",
-		"web-app/js/application.js"
+		"web-app/images"		
     ]
 
     def title = "JQuery EasyUI from Grails"

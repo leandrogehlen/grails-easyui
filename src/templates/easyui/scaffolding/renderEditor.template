@@ -1,0 +1,53 @@
+<%  if (property.type == String)
+    	out << renderStringEditor(domainClass, property)
+        
+        
+    private renderStringEditor(domainClass, property) {
+    	if (!cp) {    	
+            return "<e:validatebox name=\"${property.name}\"/>"            
+        } else {
+        	def sb = new StringBuilder("")
+            if ("textarea" == cp.widget || (cp.maxSize > 250 && !cp.password && !cp.inList)) {
+                sb << "<textarea name=\"${property.name}\" style=\"height:60px;\"" 				
+				if (cp.maxSize) sb << " maxlength=\"${cp.maxSize}\" "
+				if (isRequired()) sb << " required=\"\" "
+ 				sb << "></textarea>"
+				
+            } else if (cp.inList) {
+				// todo	
+			} else {
+				def type				
+				if (cp.password) {
+					type="password"
+				} else if (cp.url) {
+					type="url"
+				} else if (cp.email) {
+					type="email"
+				} 
+				
+				type = (type) ? "validType=\"$type\"" : "" 
+							
+				sb << "<e:validatebox name=\"${property.name}\" $type"							
+				if (cp.maxSize) sb << " maxlength=\"${cp.maxSize}\""
+				if (!cp.editable) sb << " readonly=\"readonly\""				
+				if (isRequired()) sb << " required=\"true\""				
+				sb << "/>"
+			}
+			sb as String
+		}
+	}
+	
+	private boolean isRequired() {
+		!isOptional()
+	}
+
+	private boolean isOptional() {
+	    if (!cp) {
+	        return false
+	    }
+	    else {
+	        cp.nullable || (cp.propertyType == String && cp.blank) || cp.propertyType in [boolean, Boolean]
+	    }
+	}
+        
+%>
