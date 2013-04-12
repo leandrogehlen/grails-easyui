@@ -1,7 +1,43 @@
-<%  if (property.type == String)
+<%  
+	if (property.type == Boolean.class || property.type == boolean.class)
+        out << renderBooleanEditor(domainClass, property)		
+	else if (Number.class.isAssignableFrom(property.type) || (property.type.isPrimitive() && property.type != boolean.class))			
+        out << renderNumberEditor(domainClass, property, false)		
+	else if (Currency.class.isAssignableFrom(property.type))
+		out << renderNumberEditor(domainClass, property, true)
+	else if (property.type == String || property.type == URL.class)
     	out << renderStringEditor(domainClass, property)
+	 else if (property.type == Date.class || property.type == java.sql.Date.class || property.type == java.sql.Time.class || property.type == Calendar.class)
+        out << renderDateEditor(domainClass, property)
         
-        
+	private renderBooleanEditor(domainClass, property) {
+		def sb = new StringBuilder("")        
+		sb << "<e:combobox name=\"${property.name}\" panelHeight=\"auto\" width=\"60px\">\n\t\t\t\t"
+		sb << "<option value=\"true\"><g:message code=\"default.boolean.true\"/></option>\n\t\t\t\t"  
+		sb << "<option value=\"false\"><g:message code=\"default.boolean.false\"/></option>\n\t\t\t"  
+		sb << "</e:combobox>"    
+        return sb.toString()
+    }
+	
+	private renderNumberEditor(domainClass, property, currency) {
+		def precicion = (currency || property.type == Float.class) ?  'precision="2"' : ""
+		def props = "width=\"100px\" maxlenght=\"8\""
+			
+        if (!cp) {
+            if (property.type == Byte.class)
+                return "<e:numberbox name=\"${property.name}\" mim=\"-128\" max=\"127\" $props/>"                        
+        }
+        else {
+            if (cp.range) {
+				return "<e:numberbox name=\"${property.name}\" mim=\"\${${cp.range.from}}\" max=\"\${${cp.range.to}}\" ${precicion} $props/>"                
+            }
+            else if (cp.inList) {
+				//todo
+            }                       
+        }		
+		return "<e:numberbox name=\"${property.name}\" ${precicion} $props/>"
+    }
+	
     private renderStringEditor(domainClass, property) {
     	if (!cp) {    	
             return "<e:validatebox name=\"${property.name}\"/>"            
@@ -37,6 +73,16 @@
 		}
 	}
 	
+	 private renderDateEditor(domainClass, property) {
+        def precision = (property.type == Date.class || property.type == java.sql.Date.class || property.type == Calendar.class) ? "day" : "minute";
+		
+		if (cp  &&!cp.editable) {
+			return "\${${domainInstance}?.${property.name}?.toString()}"
+        }
+				        
+        return precision == 'day' ? "<e:datebox name=\"${property.name}\" width=\"100px\"/>" : "<e:timespinner name=\"${property.name}\" showSeconds=\"true\" width=\"100px\"/>"        
+    }
+			
 	private boolean isRequired() {
 		!isOptional()
 	}
@@ -48,6 +94,5 @@
 	    else {
 	        cp.nullable || (cp.propertyType == String && cp.blank) || cp.propertyType in [boolean, Boolean]
 	    }
-	}
-        
+	}        
 %>
