@@ -124,7 +124,9 @@ class EasyuiGrailsTemplateGenerator implements GrailsTemplateGenerator {
 		def templateText = getTemplateText("Controller.groovy")
 
 		boolean hasHibernate = pluginManager.hasGrailsPlugin('hibernate')
-		def binding = [packageName: domainClass.packageName,
+		def binding = [
+			pluginManager: pluginManager,
+			packageName: domainClass.packageName,
 			domainClass: domainClass,
 			className: domainClass.shortName,
 			propertyName: getPropertyName(domainClass),

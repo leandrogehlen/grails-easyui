@@ -2,32 +2,37 @@
 
 import org.springframework.dao.DataIntegrityViolationException
 
-import br.com.virtualcode.search.Search
-import br.com.virtualcode.search.SearchEngine
-import br.com.virtualcode.util.SearchUtil
- 
 class ${className}Controller {
     
 	static allowedMethods = [save: "POST", delete: "POST"]
 		
 	def index() {
-		render (view: 'index')
+		render (view: "list")
 	}
 
 	def list() {
-		def page = request.getParameter('page') as Integer ?: 1
-		def rows = request.getParameter('rows') as Integer ?: 10
-		def sort = request.getParameter('sort')
+		def page = params.page as Integer ?: 1
+		def rows = params.rows as Integer ?: 10
+		<% if (pluginManager.hasGrailsPlugin('search-fields')) {%>
+		def search = ${className}.createSearch()
 
-		def searchEngine = new SearchEngine(SearchUtil.extractConfig(${className}))
-		def search = searchEngine.createSearch()
-
-		if (sort)
-			search.setSort(sort, request.getParameter('order') != 'desc')
-
-		def count = ${className}.executeQuery(search.queryCount)
+		if (params.sort)
+			search.setSort(params.sort, params.order != 'desc')
+			
+		if (params.value)
+			search = search.execute(params.field, params.value)
+						
+		def count = ${className}.executeQuery(search.count)
 		def list = ${className}.findAll(search.query, [max: rows, offset: (page-1) * rows])
-
+		<%} else {%>
+		params.max = Math.min(rows ?: 10, 100)
+		params.offset = (page-1) * rows
+		
+		//TODO: Create filter with "params.field" and "param.value"
+		
+		def list = Pais.list(params)
+		def count = Pais.count()
+		<%}%>
 		render([total: count, rows: list] as JSON)
 	}
 
