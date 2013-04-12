@@ -110,7 +110,7 @@ function Scaffold(options) {
 	
 	this.search = function(name, value) {				
 		self.grid.datagrid('clearSelections');				
-		self.grid.datagrid('options').queryParams = {'filter_field': name, 'filter_value': value};		
+		self.grid.datagrid('options').queryParams = {'field': name, 'value': value};		
 		self.grid.datagrid('load');		
 	}
 }
