@@ -1,0 +1,41 @@
+form {
+	margin:0;
+	padding:0;
+	border:0;
+	font-weight:inherit;
+	font-style:inherit;
+	font-size:100%;
+	font-family:inherit;
+	vertical-align:baseline;
+	margin-bottom: 4px;
+}
+
+form .row {	
+	margin-top: 6px;	
+	margin-bottom: 6px;
+}
+
+form .row label {
+	margin: 4px 10px;
+	float: left;
+	font-weight: bold;				
+	position: relative;
+	text-align: right;
+	width: 110px;	
+}
+
+form .row-center {
+	text-align: center;	
+	vertical-align: middle;
+}
+
+form .row-input {	
+	margin: 6px 2px 6px 130px;		
+	vertical-align: middle;
+}
+
+form .row-buttons {	
+	margin-top: 10px;
+	margin-bottom: 5px;
+	text-align: center;	
+}

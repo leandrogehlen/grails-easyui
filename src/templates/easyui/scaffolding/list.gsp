@@ -1,14 +1,12 @@
 <% import grails.persistence.Event %>
-<%=packageName%>
 <!DOCTYPE html>
 <html>
 	<head>
 		<link rel="stylesheet" href="\${resource(dir: 'css', file: 'main.css')}" type="text/css">
 		<link rel="stylesheet" href="\${resource(dir: 'css', file: 'mobile.css')}" type="text/css">	
-		<r:require module="easyui"/>				
+		<r:require module="easyui-scaffold"/>				
 		<r:layoutResources />
-		
-		<script src="\${resource(plugin:'easyui', dir: 'js', file: 'scaffold.js')}" type="text/javascript"></script>
+				
 		<script type="text/javascript">								
 			\$(document).ready(function() {
 				var scaffold = new Scaffold({
