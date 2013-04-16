@@ -11,8 +11,8 @@ class ${className}Controller {
 	}
 
 	def list() {
-		def page = params.page as Integer ?: 1
-		def rows = params.rows as Integer ?: 10
+		def page = params.page
+		def rows = params.rows
 		<% if (pluginManager.hasGrailsPlugin('search-fields')) {%>
 		def search = ${className}.createSearch()
 
@@ -22,13 +22,16 @@ class ${className}Controller {
 		if (params.value)
 			search = search.execute(params.field, params.value)
 						
+		def limit = (page && rows) ? [max: rows, offset: (page-1) * rows] : [:]
 		def count = ${className}.executeQuery(search.count)
-		def list = ${className}.findAll(search.query, [max: rows, offset: (page-1) * rows])
+		def list = ${className}.findAll(search.query, limit)
 		<%} else {%>
-		params.max = Math.min(rows ?: 10, 100)
-		params.offset = (page-1) * rows
+		if (page && rows) {
+			params.max = Math.min(rows ?: 10, 100)
+			params.offset = (page-1) * rows
+		}
 		
-		//TODO: Create filter with "params.field" and "param.value"
+		//TODO: Create filter with "params.field" and "params.value"
 		
 		def list = Pais.list(params)
 		def count = Pais.count()
@@ -43,8 +46,11 @@ class ${className}Controller {
 
 	def save() {
 		def ${propertyName} = (params.id) ? ${className}.get(params.id) : new ${className}()
-		${propertyName}.properties = params
-		
+		${propertyName}.properties = params<% 
+		props = domainClass.properties.findAll { it.association }
+		props.each { p -> %>
+		${propertyName}.${p.name} = ${p.referencedDomainClass.name}.get(params.${p.name}_id)
+		<%}%>				
 		if (!${propertyName}.save(flush: true)) {
 			render([success: false] as JSON)
 			return
@@ -66,5 +72,4 @@ class ${className}Controller {
 			}
 		}
 	}
-
 }
