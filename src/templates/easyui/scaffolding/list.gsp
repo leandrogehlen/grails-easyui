@@ -4,7 +4,7 @@
 	<head>
 		<link rel="stylesheet" href="\${resource(dir: 'css', file: 'main.css')}" type="text/css">
 		<link rel="stylesheet" href="\${resource(dir: 'css', file: 'mobile.css')}" type="text/css">	
-		<r:require module="easyui-scaffold"/>				
+		<r:require module="easyui_scaffold"/>				
 		<r:layoutResources />
 				
 		<script type="text/javascript">								
