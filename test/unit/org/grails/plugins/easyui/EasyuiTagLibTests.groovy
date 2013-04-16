@@ -1,7 +1,5 @@
 package org.grails.plugins.easyui
 
-import org.grails.plugins.easyui.EasyuiTagLib;
-
 import grails.test.mixin.TestFor
 
 @TestFor(EasyuiTagLib)
@@ -23,6 +21,10 @@ class EasyuiTagLibTests {
 		assert '<div id="tt" class="easyui-tabs"></div>' == applyTemplate('<e:tabs id="tt"/>')
 
 		assert '<div class="easyui-tabs" style="width:10px;overflow:true"></div>' == applyTemplate('<e:tabs width="10px" style="overflow:true"/>')
+		
+		def title = 'id'
+		expected = "<select class=\"easyui-combogrid\" data-options=\"columns:[[{field:'id', title:'${title}', width:100}]]\"></select>"
+		assert expected == applyTemplate("<e:combogrid columns=\"js:[[{field:'id', title:'id', width:100}]]\" />") 		
     }
 
 	void testEventTag() {

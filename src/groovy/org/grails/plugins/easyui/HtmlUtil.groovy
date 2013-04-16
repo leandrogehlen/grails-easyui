@@ -2,6 +2,7 @@ package org.grails.plugins.easyui
 
 import javax.swing.text.html.HTML
 
+import org.apache.commons.lang.ObjectUtils
 import org.apache.commons.lang.StringUtils
 
 class HtmlUtil {
@@ -38,6 +39,9 @@ class HtmlUtil {
 		attrs.collect{k,v->
 			String[] js = ["function", "js:"]
 			boolean nonQuoted = (!(v instanceof String) || v == "true" || v == "false" || StringUtils.startsWithAny(v, js))
+			
+			if (v instanceof GString)
+				v = ObjectUtils.toString(v)
 			
 			if (v instanceof String && v.startsWith("js:"))
 				v = v.substring(3)
