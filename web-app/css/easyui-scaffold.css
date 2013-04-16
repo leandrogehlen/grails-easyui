@@ -39,3 +39,28 @@ form .row-buttons {
 	margin-bottom: 5px;
 	text-align: center;	
 }
+
+form .row-errors ul {
+	border-left: 1px solid #FFAAAA;
+	border-right: 1px solid #FFAAAA;
+	border-top: 1px solid #FFAAAA;
+	   -mox-box-shadow: 0 0 2px rgba(0,0,0,0.2);
+	-webkit-box-shadow: 0 0 2px rgba(0,0,0,0.2);
+	        box-shadow: 0 0 2px rgba(0,0,0,0.2);
+	border-bottom: 1px solid #FFAAAA;
+	   -mox-box-shadow: 0 0 2px rgba(0,0,0,0.2);
+	-webkit-box-shadow: 0 0 2px rgba(0,0,0,0.2);
+	        box-shadow: 0 0 2px rgba(0,0,0,0.2);
+	background-color:#FFF3F3;
+	line-height: 1.5;
+	overflow: hidden;
+	padding: 5px;
+	padding-left:25px;
+	margin: 10px 10px 5px 10px
+}
+			
+form .row-errors ul li {
+	margin-top: 5px;				
+	font-weight: bold;		
+	color: #cc0000;												
+}	

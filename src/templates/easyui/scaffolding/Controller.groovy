@@ -11,8 +11,8 @@ class ${className}Controller {
 	}
 
 	def list() {
-		def page = params.page
-		def rows = params.rows
+		def page = params.page as Integer
+		def rows = params.rows as Integer
 		<% if (pluginManager.hasGrailsPlugin('search-fields')) {%>
 		def search = ${className}.createSearch()
 
@@ -52,7 +52,7 @@ class ${className}Controller {
 		${propertyName}.${p.name} = ${p.referencedDomainClass.name}.get(params.${p.name}_id)
 		<%}%>				
 		if (!${propertyName}.save(flush: true)) {
-			render([success: false] as JSON)
+			render([success: false, messages: ${propertyName}.errors] as JSON)
 			return
 		}
 						

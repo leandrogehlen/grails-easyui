@@ -21,6 +21,9 @@ function Scaffold(options) {
 		        	return false;
 		    	}
 			});															
+		},
+		onClose: function(){
+			self.clearErrors();
 		}
 	});
 			
@@ -39,6 +42,10 @@ function Scaffold(options) {
 		return valid;
 	}
 		
+	this.clearErrors = function() {
+		var div = $('.row-errors:first');
+		if (div.length) div.empty();
+	}
 		
 	this.clear = function () {
 		self.frm.find('input,select,textarea').each(function(){			
@@ -97,12 +104,25 @@ function Scaffold(options) {
 	
 	this.save = function() {				
 		if (self.frm.form('validate')) {			
-			var selec = self.grid.datagrid('getSelected');				
+			self.clearErrors();				
 			self.frm.form('submit',{
 				url: this.route+'/save',
-				success:function(data){							
-					self.win.window('close');
-					self.grid.datagrid('reload');							
+				success:function(data){						
+					var result = $.parseJSON(data);					
+					if (result.success) {
+						self.win.window('close');
+						self.grid.datagrid('reload');
+					}
+					else {
+						var div = $('.row-errors:first');
+						if (div.length) {						
+							var li = "";
+							var errors = result.messages.errors;													
+							for (i in errors)
+								li += '<li>'+errors[i].message+'</li>';							
+							div.append('<ul>'+li+'</ul>');
+						}	
+					}
 				}
 			});
 		}		

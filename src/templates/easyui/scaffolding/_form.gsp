@@ -14,6 +14,9 @@
 			<label for="${p.name}"><g:message code="${domainClass.propertyName}.${p.name}"/></label>
 			${renderEditor(p)}
 		</div><%}}%>
+		
+		<div class="row-errors">
+		</div>
 														
 		<div class="row-buttons">
 			<e:linkbutton id="btnSave" iconCls="icon-ok"><g:message code="base.salvar" /></e:linkbutton>  			
