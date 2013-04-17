@@ -1,3 +1,13 @@
+var locale = {
+	scaffold : {
+		noRecordsSelectedMsg: "No records selected",
+		onlyOneRecordSelectedMsg: "Only one record should be selected",
+		removeConfirmationMsg : "Are you sure you want to remove the selected(s) record(s)",
+		alertTitle: "Alert",
+		confirmTitle: "Confirm"
+	}
+}
+
 function Scaffold(options) {
 	var defaults = { 
 		window: null,		
@@ -11,7 +21,13 @@ function Scaffold(options) {
 	this.win = options.window;
 	this.route = options.route.replace('/index','');
 	this.frm = options.window.find('form');
-	this.grid = options.grid;	
+	this.grid = options.grid;
+			
+	this.noRecordsSelectedMsg = locale.scaffold.noRecordsSelectedMsg;
+	this.onlyOneRecordSelectedMsg = locale.scaffold.onlyOneRecordSelectedMsg;
+	this.removeConfirmationMsg = locale.scaffold.removeConfirmationMsg;
+	this.alertTitle = locale.scaffold.alertTitle;
+	this.confirmTitle = locale.scaffold.confirmTitle;
 	
 	this.win.dialog({		
 		onOpen : function() {									
@@ -33,9 +49,9 @@ function Scaffold(options) {
 		var valid = false;
 
 		if (!selected)
-			$.messager.alert('Aviso','Nenhum registro foi selecionado', 'warning');
+			$.messager.alert(self.alertTitle, self.noRecordsSelectedMsg, 'warning');
 		else if ((multiple) && (rows.length > 1))
-			$.messager.alert('Aviso', 'Apenas um registro deve ser selecionado', 'warning');
+			$.messager.alert(self.alertTitle, self.onlyOneRecordSelectedMsg, 'warning');
 		else
 			valid = true;
 			
@@ -84,17 +100,19 @@ function Scaffold(options) {
 	} 
 	
 	this.remove = function () {		
-		$.messager.confirm('Confirmação', 'Confirma exclusão do(s) regsitro(s) selecionado(s)?', function(r){			
-			if (r) {
-				var rows = self.grid.datagrid('getSelections');				
-				for(var i in rows) {							
-					$.post(self.route +'/delete/'+rows[i].id, function(data) {
-						self.grid.datagrid('reload');
-						self.grid.datagrid('clearSelections');			
-					});
-				}				
-			}							
-		}); 				
+		if (self.validate(false)) {
+			$.messager.confirm(self.confirmTitle, self.removeConfirmationMsg, function(r){			
+				if (r) {
+					var rows = self.grid.datagrid('getSelections');				
+					for(var i in rows) {							
+						$.post(self.route +'/delete/'+rows[i].id, function(data) {
+							self.grid.datagrid('reload');
+							self.grid.datagrid('clearSelections');			
+						});
+					}				
+				}							
+			}); 				
+		}
 	}		
 	
 	this.refresh = function() {					

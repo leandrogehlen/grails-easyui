@@ -16,6 +16,7 @@ modules = {
 	easyui_scaffold {
 		dependsOn "easyui_core"		
 		resource url: [plugin: "easyui", dir: "js", file: "easyui-scaffold.js"], disposition: 'head'
+		resource url: [plugin: "easyui", dir: "js/locale", file: "easyui-scaffold-lang-${locale}.js"], disposition: 'head'
 		resource url: [plugin: "easyui", dir: "css", file: "easyui-scaffold.css"], disposition: 'head'		
 	}
 }
