@@ -15,17 +15,19 @@ Download http://www.jeasyui.com/download/, extracting content in webapp/js/jquer
 Usage
 -----
 
-    <r:require modules="easyui"/>
-    <r:layoutResources />
+```xml
+<r:require modules="easyui_core"/>
+<r:layoutResources />
+``` 
     
 Hello World!
 ------------
-  
-    <html>
+```xml
+<html>
     <head>
         <title>Hello World Demo</title>
-        <r:require module="easyui"/>    			
-		<r:layoutResources />
+        <r:require module="easyui_core"/>    			
+	<r:layoutResources />
     </head>
 
     <body>
@@ -33,6 +35,6 @@ Hello World!
          Some Content.
     </e:window>
     </body>
-    </html>
-
+</html>
+``` 
 ![Hello World](https://jquery-easyui.googlecode.com/svn/trunk/share/tutorial/window/win1_1.png)
