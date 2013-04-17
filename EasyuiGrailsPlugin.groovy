@@ -4,8 +4,7 @@ class EasyuiGrailsPlugin {
     def grailsVersion = "2.0 > *"    
     def dependsOn = [:]
 
-    def pluginExcludes = [
-        "web-app/css",
+    def pluginExcludes = [        
 		"web-app/images"		
     ]
 
