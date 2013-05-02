@@ -10,12 +10,12 @@ form {
 	margin-bottom: 4px;
 }
 
-form .row {	
+form .row-input {	
 	margin-top: 6px;	
 	margin-bottom: 6px;
 }
 
-form .row label {
+form .row-input label {
 	margin: 4px 10px;
 	float: left;
 	font-weight: bold;				
@@ -26,11 +26,6 @@ form .row label {
 
 form .row-center {
 	text-align: center;	
-	vertical-align: middle;
-}
-
-form .row-input {	
-	margin: 6px 2px 6px 130px;		
 	vertical-align: middle;
 }
 
