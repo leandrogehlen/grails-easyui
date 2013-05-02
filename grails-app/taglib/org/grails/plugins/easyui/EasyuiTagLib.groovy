@@ -168,8 +168,9 @@ class EasyuiTagLib {
 	 * @attr fit
 	 * @attr border
 	 * @attr animate
+	 * @attr icconCls
 	 */
-	def item = { attrs, body ->
+	def div = { attrs, body ->
 		doTag(attrs, body, "div")
 	}
 
