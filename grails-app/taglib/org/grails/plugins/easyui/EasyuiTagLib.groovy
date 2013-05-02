@@ -276,6 +276,17 @@ class EasyuiTagLib {
 	def linkbutton = { attrs, body ->
 		doTag(attrs, body, "a", "linkbutton")
 	}
+	
+	/**
+	 * @attr id
+	 * @attr zIndex
+	 * @attr left
+	 * @attr top
+	 * @attr minWidth
+	 */
+	def menu = { attrs, body ->
+		doTag(attrs, body, "div", "menu")
+	}
 
 	/**
 	 * @attr id
