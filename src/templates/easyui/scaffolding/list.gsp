@@ -42,15 +42,14 @@
 		</script>	
 	</head>							
 	<body>		
-		<table id="tb" width="100%" >
-			<tr valign="middle">	
-			<td align="left">
+		<div id="tb" class="scaffoldbar">			
+			<div class="scaffoldbar-left">
 				<e:linkbutton id="btnAdd" plain="true" iconCls="icon-add"><g:message code="default.button.create.label"/></e:linkbutton>
 				<e:linkbutton id="btnEdit" plain="true" iconCls="icon-edit"><g:message code="default.button.edit.label"/></e:linkbutton>  
 				<e:linkbutton id="btnDelete" plain="true" iconCls="icon-remove"><g:message code="default.button.delete.label"/></e:linkbutton>
 				<e:linkbutton id="btnRefresh" plain="true" iconCls="icon-reload"><g:message code="default.button.refresh.label"/></e:linkbutton>
-			</td>
-			<td align="right">
+			</div>
+			<div class="scaffoldbar-right">
 				<e:searchbox id="txtSearch" menu="#mm"/>												
 				<div id="mm" ><%
 					excludedProps = Event.allEvents.toList() << 'version'
@@ -62,9 +61,8 @@
 					if (p.name != 'id' && i < 6) { %>
 					<div data-options="name:'${p.name}'"><g:message code="${domainClass.propertyName}.${p.name}"/></div><%}}%>       					 
 				</div>
-			</td>
-			</tr>			
-		</table>
+			</div>
+		</div>
 
 		<e:datagrid id="grid" idField="id" fit="true" fitColumns="true" pagination="true" toolbar="#tb" 
 			url="\${createLink(action:'list')}" >

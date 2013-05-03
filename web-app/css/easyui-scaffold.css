@@ -59,3 +59,27 @@ form .row-errors ul li {
 	font-weight: bold;		
 	color: #cc0000;												
 }	
+
+.scaffoldbar {
+	width: 100%;										
+	height: 30px;	
+	padding-top: 6px;																			
+}
+			
+.scaffoldbar-left {		
+	display: inline;																				
+	height: 100%;							
+	float: left;	
+	width: auto;		
+}
+			
+.scaffoldbar-right {
+	display: inline;
+	position: relative;
+	float: right;
+	padding-top: 2px;	
+	padding-right: 6px;
+	text-align: right;	
+	height: 100%;
+	width: auto;	
+}
