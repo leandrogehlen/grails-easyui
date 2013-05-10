@@ -47,6 +47,8 @@ We can generate scaffold with commands:
 grails easyui-generate-controller [domainClass]
 grails easyui-generate-view [domainClass]
 grails easyui-generate-all [domainClass]
+grails easyui-generate-all [domainClass]
+grails easyui-install-templates
 ```
 
 Registering DomainClassMarshaller
