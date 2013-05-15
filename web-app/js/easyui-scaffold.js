@@ -42,6 +42,16 @@ function Scaffold(options) {
 			self.clearErrors();
 		}
 	});
+	
+
+	$(this.frm).form({
+		onLoadSuccess: function(data) {
+			if (data.success === false)
+				$.messager.alert(self.alertTitle, data.error, 'warning');
+			else
+				self.win.dialog('open');
+		}
+	});
 			
 	this.validate = function(multiple) {							
 		var selected = self.grid.datagrid('getSelected');
@@ -61,6 +71,16 @@ function Scaffold(options) {
 	this.clearErrors = function() {
 		var div = $('.row-errors:first');
 		if (div.length) div.empty();
+	}
+	
+	this.showErrors = function(errors) {
+		var div = $('.row-errors:first');
+		if (div.length) {						
+			var li = "";			
+			for (i in errors)
+				li += '<li>'+errors[i].message+'</li>';							
+			div.append('<ul>'+li+'</ul>');
+		}		
 	}
 		
 	this.clear = function () {
@@ -94,8 +114,7 @@ function Scaffold(options) {
 		if (self.validate(true)) {			
 			var url = self.route+"/show/"+self.grid.datagrid('getSelected').id;			
 			self.frm.form('reset');
-			self.frm.form('load', url);																															 	
-			self.win.dialog('open');
+			self.frm.form('load', url);																															 				
 		}
 	} 
 	
@@ -132,14 +151,7 @@ function Scaffold(options) {
 						self.grid.datagrid('reload');
 					}
 					else {
-						var div = $('.row-errors:first');
-						if (div.length) {						
-							var li = "";
-							var errors = result.messages.errors;													
-							for (i in errors)
-								li += '<li>'+errors[i].message+'</li>';							
-							div.append('<ul>'+li+'</ul>');
-						}	
+						self.showErrors(result.messages.errors);
 					}
 				}
 			});

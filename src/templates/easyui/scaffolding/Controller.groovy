@@ -39,8 +39,12 @@ class ${className}Controller {
 		render([total: count, rows: list] as JSON)
 	}
 
-	def show(Long id) {
+	def show(Long id) {				
 		def ${propertyName} = ${className}.get(id)
+		if (!${propertyName}) {
+			render([success: false, error: message(code: 'default.not.found.message', args: [message(code: 'pais.label', default: 'Pais'), id])] as JSON)
+			return
+		}
 		render ${propertyName} as JSON
 	}
 
