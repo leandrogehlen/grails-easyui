@@ -33,8 +33,8 @@ class ${className}Controller {
 		
 		//TODO: Create filter with "params.field" and "params.value"
 		
-		def list = Pais.list(params)
-		def count = Pais.count()
+		def list = ${className}.list(params)
+		def count = ${className}.count()
 		<%}%>
 		render([total: count, rows: list] as JSON)
 	}
