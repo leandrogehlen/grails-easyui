@@ -9,15 +9,15 @@ class EasyuiConfig {
 	}
 
 	static String getLocale() {
-		getConfig().locale ?: 'en'
+		getConfig().locale ?: "en"
 	}
 
 	static String getTheme() {
-		getConfig().theme ?: 'default'
+		getConfig().theme ?: "default"
 	}
 
 	static String getJqueryVersion() {
-		getConfig().jquery.version ?: '1.8.0'
+		getConfig().jquery.version ? "-${getConfig().jquery.version}": ""
 	}
 
 }
