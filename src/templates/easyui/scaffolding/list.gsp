@@ -5,7 +5,7 @@
 		<meta name="layout" content="main"/>	
 		<r:require module="easyui_scaffold"/>		
 				
-		<script type="text/javascript">								
+		<r:script>								
 			\$(function() {						
 				var scaffold = new Scaffold({
 					window: \$('#win'), 
@@ -39,7 +39,7 @@
 					}
 				});			
 			});															
-		</script>	
+		</r:script>	
 	</head>							
 	<body>		
 		<div id="tb" class="scaffoldbar">			
