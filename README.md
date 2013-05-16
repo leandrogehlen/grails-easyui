@@ -14,7 +14,21 @@ You must use the Grails resources framework to make use of this plugin.
 
 Download http://www.jeasyui.com/download/, extracting content in webapp/js/jquery-easyui
 
-    jquery-easyui - jQuery EasyUI framework (version 1.3.2)
+    jquery-easyui - jQuery EasyUI framework (version 1.3.3)
+    
+Configuration
+-------------
+The following settings are available
+```groovy 
+// available "en", "pt_BR" 
+grails.plugin.geasyui.locale = 'en' 
+
+//folder name found in "jquery-easyui/themes"
+grails.plugin.geasyui.theme = 'black' 
+
+//version defined in the file "jquery-1.8.0.min.js" found in "jquery-easyui"
+grails.plugin.geasyui.jquery.version = '1.8.0' 
+``` 
 
 TagLib
 ------
