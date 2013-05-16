@@ -42,7 +42,7 @@ class ${className}Controller {
 	def show(Long id) {				
 		def ${propertyName} = ${className}.get(id)
 		if (!${propertyName}) {
-			render([success: false, error: message(code: 'default.not.found.message', args: [message(code: 'pais.label', default: 'Pais'), id])] as JSON)
+			render([success: false, error: message(code: 'default.not.found.message', args: [message(code: '${domainClass.propertyName}.label', default: '${className}'), id])] as JSON)
 			return
 		}
 		render ${propertyName} as JSON
@@ -50,6 +50,24 @@ class ${className}Controller {
 
 	def save() {
 		def ${propertyName} = (params.id) ? ${className}.get(params.id) : new ${className}()
+		
+		if (!${propertyName}) {						
+			def error = [message: message(code: 'default.not.found.message', args: [message(code: '${domainClass.propertyName}.label', default: '${className}'), params.id])]
+			render([success: false, messages: [errors:[error]] ] as JSON)		
+			return
+		}
+		
+		def version = params.version as Long	
+		if (version != null) {
+			if (${propertyName}.version > version) {<% def lowerCaseName = grails.util.GrailsNameUtils.getPropertyName(className) %>
+				${propertyName}.errors.rejectValue("version", "default.optimistic.locking.failure",
+						  [message(code: '${domainClass.propertyName}.label', default: '${className}')] as Object[],
+						  "Another user has updated this ${className} while you were editing")
+				render([success: false, messages: ${propertyName}.errors] as JSON)
+				return
+			}
+		}
+		
 		${propertyName}.properties = params<% 
 		props = domainClass.properties.findAll { it.association }
 		props.each { p -> %>

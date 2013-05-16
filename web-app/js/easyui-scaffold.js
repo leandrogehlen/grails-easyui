@@ -47,7 +47,7 @@ function Scaffold(options) {
 	$(this.frm).form({
 		onLoadSuccess: function(data) {
 			if (data.success === false)
-				$.messager.alert(self.alertTitle, data.error, 'warning');
+				$.messager.alert(self.alertTitle, data.error, 'error');
 			else
 				self.win.dialog('open');
 		}
