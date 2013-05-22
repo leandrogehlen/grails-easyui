@@ -1,5 +1,6 @@
 <%=packageName ? "package ${packageName}\n\n" : ''%>import grails.converters.JSON
 
+import org.apache.commons.lang.math.NumberUtils
 import org.springframework.dao.DataIntegrityViolationException
 
 class ${className}Controller {
@@ -57,7 +58,7 @@ class ${className}Controller {
 			return
 		}
 		
-		def version = params.version as Long	
+		def version = NumberUtils.toLong(params.version)	
 		if (version != null) {
 			if (${propertyName}.version > version) {<% def lowerCaseName = grails.util.GrailsNameUtils.getPropertyName(className) %>
 				${propertyName}.errors.rejectValue("version", "default.optimistic.locking.failure",
