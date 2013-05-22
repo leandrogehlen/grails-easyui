@@ -77,6 +77,25 @@ class EasyuiGrailsTemplateGenerator implements GrailsTemplateGenerator {
 		LOG.info "Scaffolding template generator set to use resource loader ${resourceLoader}"
 		this.resourceLoader = resourceLoader		
 	}
+	
+	void generateTest(GrailsDomainClass domainClass, String destDir) {
+		File destFile = new File("$destDir/${domainClass.packageName.replace('.','/')}/${domainClass.shortName}ControllerTests.groovy")
+		def templateText = getTemplateText("Test.groovy")
+		def t = engine.createTemplate(templateText)
+
+		def binding = [pluginManager: pluginManager,
+					   packageName: domainClass.packageName,
+					   domainClass: domainClass,
+					   className: domainClass.shortName,
+					   propertyName: domainClass.logicalPropertyName]
+
+		if (canWrite(destFile)) {
+			destFile.parentFile.mkdirs()
+			destFile.withWriter {
+				t.make(binding).writeTo(it)
+			}
+		}
+	}
 
 	@Override
 	void generateViews(GrailsDomainClass domainClass, String destDir) {
