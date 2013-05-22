@@ -1,6 +1,6 @@
 class EasyuiGrailsPlugin {
 
-    def version = "1.3"
+    def version = "1.4"
     def grailsVersion = "2.0 > *"    
     def dependsOn = [:]
 
