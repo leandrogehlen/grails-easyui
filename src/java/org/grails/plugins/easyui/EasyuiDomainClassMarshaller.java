@@ -45,14 +45,6 @@ public class EasyuiDomainClassMarshaller implements ObjectMarshaller<JSON> {
         this.application = application;
     }
     
-    private boolean isTransient(Collection<String> transients, GrailsDomainClassProperty property) {
-    	for (String t : transients){
-    		if (property.getName().equals(t))
-    			return true;
-    	}
-    	return false;    	    	
-    }
-
     public boolean isIncludeVersion(){
         return includeVersion;
     }
@@ -97,12 +89,14 @@ public class EasyuiDomainClassMarshaller implements ObjectMarshaller<JSON> {
         for (GrailsDomainClassProperty property : properties)
         	exportProperties.add(property);
         
-        for (String propName : transients) 
-        	exportProperties.add(domainClass.getPropertyByName(propName));        	        
+        if (transients != null) {
+        	for (String propName : transients) 
+        		exportProperties.add(domainClass.getPropertyByName(propName));
+        }
                 
         for (GrailsDomainClassProperty property : exportProperties) {
         
-            if(!property.isAssociation() || isTransient(transients, property) ) {
+            if(!property.isAssociation() ) {
                 writer.key(concatPropertyName(parentName, property.getName()));
                 Object val = beanWrapper.getPropertyValue(property.getName());
                 if (val instanceof Boolean)
