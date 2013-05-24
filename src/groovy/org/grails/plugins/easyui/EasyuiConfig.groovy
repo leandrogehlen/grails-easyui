@@ -5,7 +5,7 @@ import grails.util.Holders
 class EasyuiConfig {
 
 	static ConfigObject getConfig() {
-		Holders.grailsApplication.config.grails.plugin.geasyui
+		Holders.grailsApplication.config.grails.plugin.easyui
 	}
 
 	static String getLocale() {
