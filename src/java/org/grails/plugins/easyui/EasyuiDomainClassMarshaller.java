@@ -44,6 +44,14 @@ public class EasyuiDomainClassMarshaller implements ObjectMarshaller<JSON> {
         this.proxyHandler = proxyHandler;
         this.application = application;
     }
+    
+    private boolean isTransient(Collection<String> transients, GrailsDomainClassProperty property) {
+    	for (String t : transients){
+    		if (property.getName().equals(t))
+    			return true;
+    	}
+    	return false;    	    	
+    }
 
     public boolean isIncludeVersion(){
         return includeVersion;
@@ -81,12 +89,20 @@ public class EasyuiDomainClassMarshaller implements ObjectMarshaller<JSON> {
                 json.property("version", version);
             }
         }
-        BeanWrapper beanWrapper = new BeanWrapperImpl(obj);
+        BeanWrapper beanWrapper = new BeanWrapperImpl(obj);        
         GrailsDomainClassProperty[] properties = domainClass.getPersistentProperties();
-
-        for (GrailsDomainClassProperty property : properties) {
+        Collection<String> transients = (Collection<String>) GrailsClassUtils.getStaticPropertyValue(obj.getClass(), GrailsDomainClassProperty.TRANSIENT);                
+        Set<GrailsDomainClassProperty> exportProperties = new HashSet<GrailsDomainClassProperty>();
         
-            if(!property.isAssociation()) {
+        for (GrailsDomainClassProperty property : properties)
+        	exportProperties.add(property);
+        
+        for (String propName : transients) 
+        	exportProperties.add(domainClass.getPropertyByName(propName));        	        
+                
+        for (GrailsDomainClassProperty property : exportProperties) {
+        
+            if(!property.isAssociation() || isTransient(transients, property) ) {
                 writer.key(concatPropertyName(parentName, property.getName()));
                 Object val = beanWrapper.getPropertyValue(property.getName());
                 if (val instanceof Boolean)
@@ -117,18 +133,24 @@ public class EasyuiDomainClassMarshaller implements ObjectMarshaller<JSON> {
                         json.convertAnother(referenceObject);
                     }
                 } 
+                if (property.isCircular()) {                	
+            		writer.key(concatPropertyName(parentName, property.getName() + "_id"));
+            		Object val = (referenceObject != null) ? new BeanWrapperImpl(referenceObject).getPropertyValue("id") : null;            		
+            		writer.value(val);
+            	}                
                 else if(referenceObject == null) {
+                	writer.key(concatPropertyName(parentName, property.getName()));
                     json.value(null);
                 } 
                 else {
-                    GrailsDomainClass referencedDomainClass = property.getReferencedDomainClass();
-                    if(referencedDomainClass == null || property.isEmbedded() || GrailsClassUtils.isJdk5Enum(property.getType())) {
-                        json.convertAnother(referenceObject);
-                    } 
-                    else if(property.isOneToOne() || property.isManyToOne() || property.isEmbedded()) {
-                    	String prefix = (parentName != null) ? parentName.concat("_") : "";
-                        writeProperties(referenceObject, json, prefix + property.getName());
-                    }
+                	GrailsDomainClass referencedDomainClass = property.getReferencedDomainClass();                	
+                	                	                	
+                	if(referencedDomainClass == null || property.isEmbedded() || GrailsClassUtils.isJdk5Enum(property.getType())) {
+                		json.convertAnother(referenceObject);
+                	} 
+                	else if(property.isOneToOne() || property.isManyToOne() || property.isEmbedded()) {                		
+                		writeProperties(referenceObject, json, concatPropertyName(parentName, property.getName()));
+                	}
                 }
             }
         }
