@@ -56,10 +56,10 @@
         } else {
         	def sb = new StringBuilder("")
             if ("textarea" == cp.widget || (cp.maxSize > 250 && !cp.password && !cp.inList)) {
-                sb << "<textarea name=\"${property.name}\" style=\"height:60px;\"" 				
+                sb << "<e:textarea name=\"${property.name}\" style=\"height:60px;\"" 				
 				if (cp.maxSize) sb << " maxlength=\"${cp.maxSize}\" "
-				if (isRequired()) sb << " required=\"\" "
- 				sb << "></textarea>"
+				if (isRequired()) sb << " required=\"true\" "
+ 				sb << "></e:textarea>"
 				
             } else if (cp.inList) {
 				// todo	

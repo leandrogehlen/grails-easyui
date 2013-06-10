@@ -324,9 +324,22 @@ class EasyuiTagLib {
 	 * @attr validType
 	 * @attr missingMessage
 	 * @attr invalidMessage
+	 * @attr deltaX
 	 */
 	def validatebox = { attrs, body ->
 		doTag(attrs, body, "input", "validatebox")
+	}
+	
+	/**
+	 * @attr id
+	 * @attr required
+	 * @attr validType
+	 * @attr missingMessage
+	 * @attr invalidMessage
+	 * @attr deltaX
+	 */
+	def textarea = { attrs, body ->
+		doTag(attrs, body, "textarea", "validatebox")
 	}
 
 	/**
