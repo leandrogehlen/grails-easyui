@@ -5,3 +5,5 @@ log4j = {
 			'org.codehaus.groovy.grails.plugins',			
 			'org.springframework'	
 }
+grails.views.default.codec="none" // none, html, base64
+grails.views.gsp.encoding="UTF-8"
