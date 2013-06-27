@@ -26,6 +26,9 @@ grails.plugin.easyui.locale = 'en'
 //folder name found in "jquery-easyui/themes"
 grails.plugin.easyui.theme = 'black' 
 
+//version defined in the file "jquery-1.8.0.min.js" found in "jquery-easyui"
+grails.plugin.easyui.jquery.version = '1.8.0' 
+
 //Auto register marshaller on bootstrap
 grails.plugin.easyui.register.marshaller = true
 ``` 
