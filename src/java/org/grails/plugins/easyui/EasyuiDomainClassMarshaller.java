@@ -30,19 +30,30 @@ import org.springframework.beans.BeanWrapperImpl;
 
 public class EasyuiDomainClassMarshaller implements ObjectMarshaller<JSON> {
 	
+	public static final String COMPLETE_MARSHALLER = "easyui-show";
+	
 	private boolean includeVersion;
+	private boolean exportOneToMany;
     private ProxyHandler proxyHandler;
     private GrailsApplication application;
-
-    public EasyuiDomainClassMarshaller(boolean includeVersion, GrailsApplication application) {
-        this(includeVersion, ((ProxyHandler) (new DefaultProxyHandler())), application);
+        
+    public EasyuiDomainClassMarshaller(GrailsApplication application) {
+    	this(true, false, application);
     }
 
-    public EasyuiDomainClassMarshaller(boolean includeVersion, ProxyHandler proxyHandler, GrailsApplication application){
-        this.includeVersion = false;
-        this.includeVersion = includeVersion;
-        this.proxyHandler = proxyHandler;
-        this.application = application;
+    public EasyuiDomainClassMarshaller(boolean includeVersion, GrailsApplication application) {
+    	this(includeVersion, false, application);
+    }
+
+    public EasyuiDomainClassMarshaller(boolean includeVersion, boolean exportOneToMany, GrailsApplication application) {
+    	this(includeVersion, exportOneToMany, new DefaultProxyHandler(), application);
+    }    
+
+    public EasyuiDomainClassMarshaller(boolean includeVersion, boolean exportOneToMany, ProxyHandler proxyHandler, GrailsApplication application){        
+    	this.includeVersion = includeVersion;
+    	this.exportOneToMany = exportOneToMany;
+    	this.proxyHandler = proxyHandler;
+    	this.application = application;
     }
     
     public boolean isIncludeVersion(){
@@ -65,7 +76,7 @@ public class EasyuiDomainClassMarshaller implements ObjectMarshaller<JSON> {
     }
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-    protected void writeProperties(Object obj, JSON json, String parentName) {
+    protected void writeProperties(Object obj, JSON json, String parentName, Class<?> ignoredClass) {
         JSONWriter writer = json.getWriter();
         obj = proxyHandler.unwrapIfProxy(obj);
         Class<?> clazz = obj.getClass();
@@ -142,8 +153,22 @@ public class EasyuiDomainClassMarshaller implements ObjectMarshaller<JSON> {
                 	if(referencedDomainClass == null || property.isEmbedded() || GrailsClassUtils.isJdk5Enum(property.getType())) {
                 		json.convertAnother(referenceObject);
                 	} 
-                	else if(property.isOneToOne() || property.isManyToOne() || property.isEmbedded()) {                		
-                		writeProperties(referenceObject, json, concatPropertyName(parentName, property.getName()));
+                	else if(property.isOneToOne() || property.isManyToOne() || property.isEmbedded()) {  
+                		if(ignoredClass == null || !ignoredClass.isAssignableFrom(property.getType()))
+                			writeProperties(referenceObject, json, concatPropertyName(parentName, property.getName()), null);
+                	}
+                	else if (this.exportOneToMany) {
+                		if (referenceObject instanceof Collection) {
+                			writer.key(concatPropertyName(parentName, property.getName()));
+                            Collection o = (Collection) referenceObject;
+                            writer.array();
+                            for (Object el : o) {
+                            	writer.object();
+                            	writeProperties(el, json, null, clazz);
+                            	writer.endObject();
+                            }
+                            writer.endArray();
+                        }
                 	}
                 }
             }
@@ -162,7 +187,7 @@ public class EasyuiDomainClassMarshaller implements ObjectMarshaller<JSON> {
 	public void marshalObject(Object value, JSON json) throws ConverterException {
 		 JSONWriter writer = json.getWriter();
 	     writer.object();
-	     writeProperties(value, json, null);
+	     writeProperties(value, json, null, null);
 	     writer.endObject();		
 	}
 

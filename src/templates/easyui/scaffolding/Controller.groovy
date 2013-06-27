@@ -46,7 +46,7 @@ class ${className}Controller {
 			render([success: false, error: message(code: 'default.not.found.message', args: [message(code: '${domainClass.propertyName}.label', default: '${className}'), id])] as JSON)
 			return
 		}
-		render ${propertyName} as JSON
+		JSON.use("easyui-load-domain"){ render ${propertyName} as JSON }		
 	}
 
 	def save() {

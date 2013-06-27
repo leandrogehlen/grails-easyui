@@ -19,5 +19,8 @@ class EasyuiConfig {
 	static String getJqueryVersion() {
 		getConfig().jquery.version ? "-${getConfig().jquery.version}": ""
 	}
-
+	
+	static Boolean getRegisterMarshaller() {			
+		getConfig().register.marshaller != null ? getConfig().register.marshaller as Boolean : true
+	}
 }

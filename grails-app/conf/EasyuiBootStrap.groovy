@@ -10,7 +10,10 @@ class EasyuiBootStrap {
 
     def init = { servletContext ->		
 		if (EasyuiConfig.registerMarshaller) {			
-			JSON.registerObjectMarshaller(new EasyuiDomainClassMarshaller(true, grailsApplication))			
+			JSON.registerObjectMarshaller(new EasyuiDomainClassMarshaller(true, grailsApplication))	
+			JSON.createNamedConfig("easyui-load-domain", {
+				it.registerObjectMarshaller(new EasyuiDomainClassMarshaller(true, true, grailsApplication))
+			})
 		}									
     }
 	
