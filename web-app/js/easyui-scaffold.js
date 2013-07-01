@@ -12,12 +12,18 @@ function Scaffold(options) {
 	var defaults = { 
 		window: null,		
 		route: "",
-		grid: null
+		grid: null,
+		onBeforeEdit: function(isNewRecord, data){},	    
+	    onAfterEdit: function(isNewRecord){},
+		onBeforeRemove: function(rows){},	    
+	    onAfterRemove: function(){},
+		onBeforeRefresh: function(){},	    
+	    onAfterRefresh: function(){}
 	};
 	
 	var options = $.extend({}, defaults, options);
 	var self = this; 		
-	
+		
 	this.win = options.window;
 	this.route = options.route.replace('/index','');
 	this.frm = options.window.find('form');
@@ -48,8 +54,11 @@ function Scaffold(options) {
 		onLoadSuccess: function(data) {
 			if (data.success === false)
 				$.messager.alert(self.alertTitle, data.error, 'error');
-			else
+			else {
+				options.onBeforeEdit(false, data);
 				self.win.dialog('open');
+				options.onAfterEdit(false);
+			}
 		}
 	});
 			
@@ -106,8 +115,10 @@ function Scaffold(options) {
 	}
 			
 	this.add = function() {																	
-		self.clear();									
-    	self.win.dialog('open');        	
+		self.clear();		
+		options.onBeforeEdit(true, {});
+    	self.win.dialog('open');    
+    	options.onAfterEdit(true);
 	}
 	
 	this.edit = function() {		
@@ -122,21 +133,25 @@ function Scaffold(options) {
 		if (self.validate(false)) {
 			$.messager.confirm(self.confirmTitle, self.removeConfirmationMsg, function(r){			
 				if (r) {
-					var rows = self.grid.datagrid('getSelections');				
+					var rows = self.grid.datagrid('getSelections');		
+					options.onBeforeRemove(rows);
 					for(var i in rows) {							
 						$.post(self.route +'/delete/'+rows[i].id, function(data) {
 							self.grid.datagrid('reload');
 							self.grid.datagrid('clearSelections');			
 						});
-					}				
+					}
+					options.onAfterRemove();
 				}							
 			}); 				
 		}
 	}		
 	
-	this.refresh = function() {					
+	this.refresh = function() {		
+		options.onBeforeRefresh();
 		self.grid.datagrid('reload');
 		self.grid.datagrid('clearSelections');
+		options.onAfterRefresh();
 	} 	
 	
 	this.save = function() {				
