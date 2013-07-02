@@ -18,7 +18,9 @@ function Scaffold(options) {
 		onBeforeRemove: function(rows){},	    
 	    onAfterRemove: function(){},
 		onBeforeRefresh: function(){},	    
-	    onAfterRefresh: function(){}
+	    onAfterRefresh: function(){},
+	    onBeforeSave: function(param){},	    
+	    onAfterSave: function(){}
 	};
 	
 	var options = $.extend({}, defaults, options);
@@ -159,9 +161,11 @@ function Scaffold(options) {
 			self.clearErrors();				
 			self.frm.form('submit',{
 				url: this.route+'/save',
+				onSubmit: options.onBeforeSave,					
 				success:function(data){						
 					var result = $.parseJSON(data);					
-					if (result.success) {
+					if (result.success) {			
+						options.onAfterSave();
 						self.win.window('close');
 						self.grid.datagrid('reload');
 					}
