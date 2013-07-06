@@ -1,5 +1,5 @@
-locale.scaffold.noRecordsSelectedMsg = "Nenhum registro foi selecionado";							
-locale.scaffold.onlyOneRecordSelectedMsg = "Apenas um registro deve ser selecionado";							
-locale.scaffold.removeConfirmationMsg = "Confirma exclusão do(s) regsitro(s) selecionado(s)?";
-locale.scaffold.alertTitle = "Alerta";
-locale.scaffold.confirmTitle = "Confirmaçao";
+scaffold.locale.noRecordsSelectedMsg = "Nenhum registro foi selecionado";							
+scaffold.locale.onlyOneRecordSelectedMsg = "Apenas um registro deve ser selecionado";							
+scaffold.locale.removeConfirmationMsg = "Confirma exclusão do(s) regsitro(s) selecionado(s)?";
+scaffold.locale.alertTitle = "Alerta";
+scaffold.locale.confirmTitle = "Confirmaçao";

@@ -91,7 +91,7 @@ class ${className}Controller {
 				${propertyName}.delete(flush: true)				
 				render([success: true] as JSON)
 			}catch (DataIntegrityViolationException e) {
-				render([success: false, erro: e.message] as JSON)
+				render([success: false, error: e.message] as JSON)
 			}
 		}
 	}

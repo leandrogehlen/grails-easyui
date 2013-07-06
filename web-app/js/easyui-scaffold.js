@@ -1,10 +1,16 @@
-var locale = {
-	scaffold : {
+var scaffold = {
+	locale : {
 		noRecordsSelectedMsg: "No records selected",
 		onlyOneRecordSelectedMsg: "Only one record should be selected",
 		removeConfirmationMsg : "Are you sure you want to remove the selected(s) record(s)",
 		alertTitle: "Alert",
 		confirmTitle: "Confirm"
+	},
+	route : {
+		save: 'save',
+		remove: 'delete',
+		show: 'show',
+		list: 'list'
 	}
 }
 
@@ -28,40 +34,46 @@ function Scaffold(options) {
 		
 	this.win = options.window;
 	this.route = options.route.replace('/index','');
-	this.frm = options.window.find('form');
+	this.frm = options.window.find('form:first');
 	this.grid = options.grid;
 			
-	this.noRecordsSelectedMsg = locale.scaffold.noRecordsSelectedMsg;
-	this.onlyOneRecordSelectedMsg = locale.scaffold.onlyOneRecordSelectedMsg;
-	this.removeConfirmationMsg = locale.scaffold.removeConfirmationMsg;
-	this.alertTitle = locale.scaffold.alertTitle;
-	this.confirmTitle = locale.scaffold.confirmTitle;
+	this.noRecordsSelectedMsg = scaffold.locale.noRecordsSelectedMsg;
+	this.onlyOneRecordSelectedMsg = scaffold.locale.onlyOneRecordSelectedMsg;
+	this.removeConfirmationMsg = scaffold.locale.removeConfirmationMsg;
+	this.alertTitle = scaffold.locale.alertTitle;
+	this.confirmTitle = scaffold.locale.confirmTitle;
 	
-	this.win.dialog({		
-		onOpen : function() {									
-			self.frm.find('input').each(function() {																		
-		    	if ($(this).attr('type')!= 'hidden') {																				
-		        	$(this).focus();					
-		        	return false;
-		    	}
-			});															
-		},
-		onClose: function(){
-			self.clearErrors();
+	this.formLoad = function(data) {
+		if (data.success === false)
+			$.messager.alert(self.alertTitle, data.error, 'error');
+		else {
+			options.onBeforeEdit(false, data);
+			self.win.dialog('open');
+			options.onAfterEdit(false);
 		}
+	}			
+	
+	this.windowOpen = function() {				
+		self.frm.find('input').each(function() {																		
+	    	if ($(this).attr('type')!= 'hidden') {																				
+	        	$(this).focus();	
+	        	$(this).select();
+	        	return false;
+	    	}
+		});		
+	}
+	
+	this.windowClose = function(){
+		self.clearErrors();
+	}	
+		
+	this.win.dialog({		
+		onOpen : self.windowOpen, 															
+		onClose: self.windowClose
 	});
 	
-
-	$(this.frm).form({
-		onLoadSuccess: function(data) {
-			if (data.success === false)
-				$.messager.alert(self.alertTitle, data.error, 'error');
-			else {
-				options.onBeforeEdit(false, data);
-				self.win.dialog('open');
-				options.onAfterEdit(false);
-			}
-		}
+	this.frm.form({
+		onLoadSuccess: self.formLoad
 	});
 			
 	this.validate = function(multiple) {							
@@ -124,10 +136,10 @@ function Scaffold(options) {
 	}
 	
 	this.edit = function() {		
-		if (self.validate(true)) {			
-			var url = self.route+"/show/"+self.grid.datagrid('getSelected').id;			
-			self.frm.form('reset');
-			self.frm.form('load', url);																															 				
+		if (self.validate(true)) {				
+			var url = self.route+"/"+ scaffold.route.show +"/"+self.grid.datagrid('getSelected').id;			
+			self.frm.form('reset');		
+			self.frm.form('load', url);			
 		}
 	} 
 	
@@ -138,9 +150,14 @@ function Scaffold(options) {
 					var rows = self.grid.datagrid('getSelections');		
 					options.onBeforeRemove(rows);
 					for(var i in rows) {							
-						$.post(self.route +'/delete/'+rows[i].id, function(data) {
-							self.grid.datagrid('reload');
-							self.grid.datagrid('clearSelections');			
+						$.post(self.route +'/'+ scaffold.route.remove+'/'+rows[i].id, function(data) {
+							if (!data.success) {
+								$.messager.alert(self.alertTitle, data.error, 'error');
+							}
+							else {
+								self.grid.datagrid('reload');
+								self.grid.datagrid('clearSelections');
+							}
 						});
 					}
 					options.onAfterRemove();
@@ -158,21 +175,19 @@ function Scaffold(options) {
 	
 	this.save = function() {				
 		if (self.frm.form('validate')) {			
-			self.clearErrors();				
-			self.frm.form('submit',{
-				url: this.route+'/save',
-				onSubmit: options.onBeforeSave,					
-				success:function(data){						
-					var result = $.parseJSON(data);					
-					if (result.success) {			
-						options.onAfterSave();
-						self.win.window('close');
-						self.grid.datagrid('reload');
-					}
-					else {
-						self.showErrors(result.messages.errors);
-					}
+			self.clearErrors();					
+			$.post(this.route+'/'+scaffold.route.save, self.frm.serialize(), function(data) {																							
+				if (data.success) {			
+					options.onAfterSave();
+					self.win.window('close');
+					self.grid.datagrid('reload');
 				}
+				else {
+					if (data.error)
+						$.messager.alert(self.alertTitle, data.error, 'error');
+					else
+						self.showErrors(data.messages.errors);
+				}				
 			});
 		}		
 	}
