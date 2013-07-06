@@ -21,6 +21,6 @@ class EasyuiConfig {
 	}
 	
 	static Boolean getRegisterMarshaller() {			
-		getConfig().register.marshaller != null ? getConfig().register.marshaller as Boolean : true
+		getConfig().register.marshaller ? getConfig().register.marshaller as Boolean : true
 	}
 }
