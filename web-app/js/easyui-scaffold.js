@@ -178,12 +178,10 @@ function Scaffold(options) {
 			self.clearErrors();		
 			
 			var param = {}
-			options.onBeforeSave(param);
+			options.onBeforeSave(param);			
+			param = (!$.isEmptyObject(param)) ? '&' + $.param(param, true) : '';				
 			
-			param = (!$.isEmptyObject(param)) ? '&' + $.param(param, true) : '';	
-			alert(param);
-			
-			$.post(this.route+'/'+scaffold.route.save, self.frm.serialize(), function(data) {																							
+			$.post(this.route+'/'+scaffold.route.save, self.frm.serialize() + param, function(data) {																							
 				if (data.success) {			
 					options.onAfterSave();
 					self.win.window('close');
