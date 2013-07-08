@@ -129,7 +129,7 @@ function Scaffold(options) {
 	}
 			
 	this.add = function() {																	
-		self.clear();		
+		self.clear();
 		options.onBeforeEdit(true, {});
     	self.win.dialog('open');    
     	options.onAfterEdit(true);
@@ -175,7 +175,14 @@ function Scaffold(options) {
 	
 	this.save = function() {				
 		if (self.frm.form('validate')) {			
-			self.clearErrors();					
+			self.clearErrors();		
+			
+			var param = {}
+			options.onBeforeSave(param);
+			
+			param = (!$.isEmptyObject(param)) ? '&' + $.param(param, true) : '';	
+			alert(param);
+			
 			$.post(this.route+'/'+scaffold.route.save, self.frm.serialize(), function(data) {																							
 				if (data.success) {			
 					options.onAfterSave();
