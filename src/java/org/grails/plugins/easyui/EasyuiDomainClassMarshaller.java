@@ -164,7 +164,7 @@ public class EasyuiDomainClassMarshaller implements ObjectMarshaller<JSON> {
                             writer.array();
                             for (Object el : o) {
                             	writer.object();
-                            	writeProperties(el, json, null, clazz);
+                            	writeProperties(el, json, null, domainClass.getClazz());
                             	writer.endObject();
                             }
                             writer.endArray();
