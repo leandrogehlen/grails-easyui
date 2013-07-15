@@ -29,12 +29,6 @@ form .row-center {
 	vertical-align: middle;
 }
 
-form .row-buttons {	
-	margin-top: 10px;
-	margin-bottom: 5px;
-	text-align: center;	
-}
-
 form .row-errors ul {
 	border-left: 1px solid #FFAAAA;
 	border-right: 1px solid #FFAAAA;
@@ -58,7 +52,13 @@ form .row-errors ul li {
 	margin-top: 5px;				
 	font-weight: bold;		
 	color: #cc0000;												
-}	
+}
+
+.row-buttons {	
+	margin-top: 10px;
+	margin-bottom: 5px;
+	text-align: center;	
+}
 
 .scaffoldbar {
 	width: 100%;										
