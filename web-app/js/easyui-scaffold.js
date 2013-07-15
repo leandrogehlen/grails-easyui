@@ -7,7 +7,8 @@ var scaffold = {
 		confirmTitle: "Confirm"
 	},
 	route : {
-		save: 'save',
+		create: 'create',
+		update: 'update',
 		remove: 'delete',
 		show: 'show',
 		list: 'list'
@@ -36,6 +37,7 @@ function Scaffold(options) {
 	this.route = options.route.replace('/index','');
 	this.frm = options.window.find('form:first');
 	this.grid = options.grid;
+	this.isNewRecord = null;
 			
 	this.noRecordsSelectedMsg = scaffold.locale.noRecordsSelectedMsg;
 	this.onlyOneRecordSelectedMsg = scaffold.locale.onlyOneRecordSelectedMsg;
@@ -48,6 +50,7 @@ function Scaffold(options) {
 			$.messager.alert(self.alertTitle, data.error, 'error');
 		else {
 			options.onBeforeEdit(false, data);
+			self.isNewRecord = false;
 			self.win.dialog('open');
 			options.onAfterEdit(false);
 		}
@@ -130,13 +133,14 @@ function Scaffold(options) {
 			
 	this.add = function() {																	
 		self.clear();
+		self.isNewRecord = true;
 		options.onBeforeEdit(true, {});
     	self.win.dialog('open');    
     	options.onAfterEdit(true);
 	}
 	
 	this.edit = function() {		
-		if (self.validate(true)) {				
+		if (self.validate(true)) {						
 			var url = self.route+"/"+ scaffold.route.show +"/"+self.grid.datagrid('getSelected').id;			
 			self.frm.form('reset');		
 			self.frm.form('load', url);			
@@ -173,15 +177,17 @@ function Scaffold(options) {
 		options.onAfterRefresh();
 	} 	
 	
-	this.save = function() {				
+	this.save = function() {		
 		if (self.frm.form('validate')) {			
-			self.clearErrors();		
-			
+			self.clearErrors();
+								
+			var url = (self.isNewRecord) ? scaffold.route.create : scaffold.route.update;						
 			var param = {}
+						
 			options.onBeforeSave(param);			
-			param = (!$.isEmptyObject(param)) ? '&' + $.param(param, true) : '';				
+			param = (!$.isEmptyObject(param)) ? '&' + $.param(param, true) : '';		
 			
-			$.post(this.route+'/'+scaffold.route.save, self.frm.serialize() + param, function(data) {																							
+			$.post(this.route+'/'+url, self.frm.serialize() + param, function(data) {																							
 				if (data.success) {			
 					options.onAfterSave();
 					self.win.window('close');

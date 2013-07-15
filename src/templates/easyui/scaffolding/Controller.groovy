@@ -5,7 +5,17 @@ import org.springframework.dao.DataIntegrityViolationException
 
 class ${className}Controller {
     
-	static allowedMethods = [save: "POST", delete: "POST"]
+	static allowedMethods = [create: "POST", update: "POST", delete: "POST"]
+	
+	private save(${className} ${propertyName}, def params) {
+		${propertyName}.properties = params
+		
+		if (!${propertyName}.save(flush: true)) {
+			render([success: false, messages: ${propertyName}.errors] as JSON)
+			return
+		}					
+		render([success: true] as JSON)		
+	}
 		
 	def index() {
 		render (view: "list")
@@ -49,8 +59,13 @@ class ${className}Controller {
 		JSON.use("domain-load"){ render ${propertyName} as JSON }		
 	}
 
-	def save() {
-		def ${propertyName} = (params.id) ? ${className}.get(params.id) : new ${className}()
+	def create() {
+		def ${propertyName} = new ${className}() 
+		save(${propertyName}, params)
+	}
+	
+	def update() {
+		def ${propertyName} = ${className}.get(params.id)
 		
 		if (!${propertyName}) {						
 			def error = [message: message(code: 'default.not.found.message', args: [message(code: '${domainClass.propertyName}.label', default: '${className}'), params.id])]
@@ -67,19 +82,13 @@ class ${className}Controller {
 				render([success: false, messages: ${propertyName}.errors] as JSON)
 				return
 			}
-		}
-		
-		${propertyName}.properties = params<% 
+		}		
+		<% 
 		props = domainClass.properties.findAll { it.association }
 		props.each { p -> %>
 		${propertyName}.${p.name} = ${p.referencedDomainClass.name}.get(params.${p.name}_id)
-		<%}%>				
-		if (!${propertyName}.save(flush: true)) {
-			render([success: false, messages: ${propertyName}.errors] as JSON)
-			return
-		}
-						
-		render([success: true] as JSON)
+		<%}%>						
+		save(${propertyName}, params)
 	}
 
 	def delete(Long id) {
