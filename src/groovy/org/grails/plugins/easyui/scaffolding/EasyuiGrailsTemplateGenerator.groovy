@@ -1,5 +1,7 @@
 package org.grails.plugins.easyui.scaffolding
 
+import java.io.IOException;
+
 import groovy.text.SimpleTemplateEngine
 import groovy.text.Template
 
@@ -254,6 +256,16 @@ class EasyuiGrailsTemplateGenerator implements GrailsTemplateGenerator {
 			LOG.debug("Error locating templates from pluginsHome: ${e.message}", e)
 		}
 		return resources
+	}
+
+	@Override
+	public void generateAsyncController(GrailsDomainClass domainClass, String destDir) throws IOException {
+		// TODO Auto-generated method stub		
+	}
+
+	@Override
+	public void generateAsyncTest(GrailsDomainClass domainClass, String destDir) throws IOException {
+		// TODO Auto-generated method stub		
 	}
 
 }
