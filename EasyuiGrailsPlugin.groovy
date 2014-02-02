@@ -1,3 +1,8 @@
+import grails.converters.JSON
+
+import org.grails.plugins.easyui.EasyuiConfig
+import org.grails.plugins.easyui.EasyuiDomainClassMarshaller
+
 class EasyuiGrailsPlugin {
 
     def version = "1.6"
@@ -17,4 +22,14 @@ class EasyuiGrailsPlugin {
     def license = "LGPL"    
     def issueManagement = [system: "github", url: "https://github.com/leandrogehlen/grails-easyui/issues"]
     def scm = [ url: "https://github.com/leandrogehlen/grails-easyui" ]
+	
+	def doWithApplicationContext = { ctx ->
+
+		if (EasyuiConfig.registerMarshaller) {			
+			JSON.registerObjectMarshaller(new EasyuiDomainClassMarshaller(true, application))	
+			JSON.createNamedConfig("domain-load", {
+				it.registerObjectMarshaller(new EasyuiDomainClassMarshaller(true, true, application))
+			})
+		}	
+	}
 }
