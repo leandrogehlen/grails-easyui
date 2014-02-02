@@ -20,7 +20,7 @@
 		</div>
 														
 		<div class="row-buttons">
-			<e:linkbutton id="btnSave" iconCls="icon-ok"><g:message code="default.button.save.label" /></e:linkbutton>  			
+			<e:linkbutton id="btn-save" iconCls="icon-ok"><g:message code="default.button.save.label" /></e:linkbutton>  			
 		</div>			
 	</form>		
 </e:window>

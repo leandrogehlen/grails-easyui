@@ -13,23 +13,23 @@
 				 	route: '\${g.createLink()}'
 				});
 															
-				\$('#btnAdd').click(function(){
+				\$('#btn-add').click(function(){
 					scaffold.add();
 				});
 
-				\$('#btnEdit').click(function(){
+				\$('#btn-edit').click(function(){
 					scaffold.edit();
 				});
 
-				\$('#btnDelete').click(function(){
+				\$('#btn-delete').click(function(){
 					scaffold.remove();
 				});
 
-				\$('#btnRefresh').click(function(){
+				\$('#btn-refresh').click(function(){
 					scaffold.refresh();
 				});
 
-				\$('#btnSave').click(function(){
+				\$('#btn-save').click(function(){
 					scaffold.save();
 				});
 
@@ -44,10 +44,10 @@
 	<body>		
 		<div id="tb" class="scaffoldbar">			
 			<div class="scaffoldbar-left">
-				<e:linkbutton id="btnAdd" plain="true" iconCls="icon-add"><g:message code="default.button.create.label"/></e:linkbutton>
-				<e:linkbutton id="btnEdit" plain="true" iconCls="icon-edit"><g:message code="default.button.edit.label"/></e:linkbutton>  
-				<e:linkbutton id="btnDelete" plain="true" iconCls="icon-remove"><g:message code="default.button.delete.label"/></e:linkbutton>
-				<e:linkbutton id="btnRefresh" plain="true" iconCls="icon-reload"><g:message code="default.button.refresh.label"/></e:linkbutton>
+				<e:linkbutton id="btn-add" plain="true" iconCls="icon-add"><g:message code="default.button.create.label"/></e:linkbutton>
+				<e:linkbutton id="btn-edit" plain="true" iconCls="icon-edit"><g:message code="default.button.edit.label"/></e:linkbutton>  
+				<e:linkbutton id="btn-delete" plain="true" iconCls="icon-remove"><g:message code="default.button.delete.label"/></e:linkbutton>
+				<e:linkbutton id="btn-refresh" plain="true" iconCls="icon-reload"><g:message code="default.button.refresh.label"/></e:linkbutton>
 			</div>
 			<div class="scaffoldbar-right">
 				<e:searchbox id="txtSearch" menu="#mm"/>												
@@ -65,7 +65,7 @@
 		</div>
 
 		<e:datagrid id="grid" idField="id" fit="true" fitColumns="true" pagination="true" toolbar="#tb" 
-			url="\${createLink(action:'list')}" >
+			url="\${createLink(action:'list.json')}" >
 			<e:columns>
 				<e:column field="ck" checkbox="true" /><% 												
 				width = (props.size > 0) ? (100 / props.size) as Integer : ""

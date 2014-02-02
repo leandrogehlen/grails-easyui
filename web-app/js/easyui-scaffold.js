@@ -103,8 +103,11 @@ function Scaffold(options) {
 		var div = $('.row-errors:first');
 		if (div.length) {						
 			var li = "";			
-			for (i in errors)
-				li += '<li>'+errors[i].message+'</li>';							
+			for (i in errors){				
+				console.log(errors[i]);
+				li += '<li>'+errors[i].message+'</li>';
+			}
+			
 			div.append('<ul>'+li+'</ul>');
 		}		
 	}
@@ -141,7 +144,7 @@ function Scaffold(options) {
 	
 	this.edit = function() {		
 		if (self.validate(true)) {						
-			var url = self.route+"/"+ scaffold.route.show +"/"+self.grid.datagrid('getSelected').id;			
+			var url = self.route+"/"+ scaffold.route.show +"/"+self.grid.datagrid('getSelected').id+'.json';			
 			self.frm.form('reset');		
 			self.frm.form('load', url);			
 		}
@@ -154,8 +157,8 @@ function Scaffold(options) {
 					var rows = self.grid.datagrid('getSelections');		
 					options.onBeforeRemove(rows);
 					for(var i in rows) {							
-						$.post(self.route +'/'+ scaffold.route.remove+'/'+rows[i].id, function(data) {
-							if (!data.success) {
+						$.post(self.route +'/'+ scaffold.route.remove+'/'+rows[i].id, function(data, status) {							
+							if (status != "success") {
 								$.messager.alert(self.alertTitle, data.error, 'error');
 							}
 							else {
@@ -186,19 +189,22 @@ function Scaffold(options) {
 						
 			options.onBeforeSave(param);			
 			param = (!$.isEmptyObject(param)) ? '&' + $.param(param, true) : '';		
-			
-			$.post(this.route+'/'+url, self.frm.serialize() + param, function(data) {																							
-				if (data.success) {			
+						
+			$.post(this.route+'/'+url+'.json', self.frm.serialize() + param, function(data, status) {
+				console.log(data);
+				console.log(status);
+				if (status == "success") {			
 					options.onAfterSave();
 					self.win.window('close');
 					self.grid.datagrid('reload');
+				}							
+			}).fail(function(xhr, status) {					
+				if (xhr.status == 422) {
+					self.showErrors($.parseJSON(xhr.responseText).errors);															
+				} else {								
+					$.messager.alert(self.alertTitle, xhr.responseText, 'error');
 				}
-				else {
-					if (data.error)
-						$.messager.alert(self.alertTitle, data.error, 'error');
-					else
-						self.showErrors(data.messages.errors);
-				}				
+					
 			});
 		}		
 	}
