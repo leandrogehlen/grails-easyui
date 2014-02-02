@@ -14,7 +14,7 @@ You must use the Grails resources framework to make use of this plugin.
 
 Download http://www.jeasyui.com/download/, extracting content in webapp/js/jquery-easyui
 
-    jquery-easyui - jQuery EasyUI framework (version 1.3.3)
+    jquery-easyui - jQuery EasyUI framework (latest version)
     
 Configuration
 -------------
@@ -54,7 +54,6 @@ TagLib
     </body>
 </html>
 ``` 
-![Hello World](https://jquery-easyui.googlecode.com/svn/trunk/share/tutorial/window/win1_1.png)
 
 Scaffold
 --------
