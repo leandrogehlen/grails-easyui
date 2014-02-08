@@ -1,4 +1,5 @@
-<%=packageName ? "package ${packageName}\n\n" : ''%>import grails.transaction.Transactional
+<%=packageName ? "package ${packageName}\n\n" : ''%>import static org.springframework.http.HttpStatus.*
+import grails.transaction.Transactional
 
 class ${className}Controller {
 
