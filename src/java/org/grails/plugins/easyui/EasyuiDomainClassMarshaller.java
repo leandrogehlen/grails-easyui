@@ -82,8 +82,11 @@ public class EasyuiDomainClassMarshaller implements ObjectMarshaller<JSON> {
         Class<?> clazz = obj.getClass();
         GrailsDomainClass domainClass = (GrailsDomainClass)application.getArtefact("Domain", ConverterUtil.trimProxySuffix(clazz.getName()));
         GrailsDomainClassProperty id = domainClass.getIdentifier();
+
+        String idPropName = (parentName == null)? "id" : parentName;
         Object idValue = extractValue(obj, id);
-        json.property(concatPropertyName(parentName, "id"), idValue);
+                
+        json.property(idPropName, idValue);
         
         if(parentName == null && isIncludeVersion()) {
             GrailsDomainClassProperty versionProperty = domainClass.getVersion();
