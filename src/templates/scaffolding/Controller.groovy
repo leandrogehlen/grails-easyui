@@ -1,6 +1,7 @@
 <%=packageName ? "package ${packageName}\n\n" : ''%>import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
+@Transactional(readOnly = true)
 class ${className}Controller {
 
 	static allowedMethods = [create: "POST", update: "POST", delete: "POST"]	
@@ -22,6 +23,7 @@ class ${className}Controller {
 		respond ${propertyName}
 	}
 
+	@Transactional
 	def create() {
 		def ${propertyName} = new ${className}(params)
 		def errors = save(${propertyName})
@@ -34,6 +36,7 @@ class ${className}Controller {
 		respond ${propertyName}, [status: CREATED]
 	}
 
+	@Transactional
 	def update(${className} ${propertyName}) {
 
 		if (${propertyName} == null) {
@@ -49,7 +52,7 @@ class ${className}Controller {
 
 		respond ${propertyName}, [status: OK]
 	}
-	
+		
 	@Transactional
 	def delete(${className} ${propertyName}) {
 
