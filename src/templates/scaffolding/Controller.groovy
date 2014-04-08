@@ -64,8 +64,7 @@ class ${className}Controller {
 		${propertyName}.delete flush:true
 		render status: OK
 	}
-	
-	@Transactional
+		
 	protected def save(${className} ${propertyName}) {
 		
 		if (!${propertyName}.validate()) {
@@ -73,6 +72,7 @@ class ${className}Controller {
 		}
 
 		${propertyName}.save flush:true
+		return null
 	}
 	
 	protected void notFound() {
