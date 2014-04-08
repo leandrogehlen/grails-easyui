@@ -27,7 +27,7 @@ class ${className}Controller {
 		def errors = save(${propertyName})
 
 		if (errors){
-			respond errors
+			respond errors, [status: NOT_ACCEPTABLE]
 			return
 		}
 
@@ -43,7 +43,7 @@ class ${className}Controller {
 
 		def errors = save(${propertyName})
 		if (errors){
-			respond errors
+			respond errors, [status: NOT_ACCEPTABLE]
 			return
 		}
 

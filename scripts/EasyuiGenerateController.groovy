@@ -1,26 +1,53 @@
-includeTargets << grailsScript("_GrailsCreateArtifacts")
-includeTargets << new File("${easyuiPluginDir}/scripts/_EasyuiGenerate.groovy")
+/*
+ * Copyright 2004-2013 SpringSource.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-generateViews = false
-generateController = true
+/**
+ * Generates CRUD views for a given domain class
+ *
+ * @author Graeme Rocher
+ *
+ * @since 0.4
+ */
 
-target(main: "Gant script that generates CRUD views for a given domain class") {
-    depends(checkVersion, parseArguments, packageApp)
-    promptForName(type: "Domain Class")
-	
-	try {
-		def name = argsMap["params"][0]
-		if (!name || name == "*") {
-			uberGenerate()
-		}
-		else {
-			generateForName = name
-			generateForOne()
-		}
+includeTargets << new File(scaffoldingPluginDir, 'scripts/_EasyuiGenerate.groovy')
+
+target (generateController: "Generates the CRUD controller for a specified domain class") {
+	depends(checkVersion, parseArguments, packageApp)
+
+	promptForName(type: "Domain Class")
+
+	generateViews = false
+
+	String name = argsMap['params'][0]
+	if (!name || name == '*') {
+		uberGenerate()
 	}
-	catch (Exception e) {
-		logError("Error running easyui-generate-view", e)
-		exit(1)
+	else {
+		generateForName = name
+		generateForOne()
 	}
 }
-setDefaultTarget("main")
+
+USAGE = """
+    generate-controller [NAME]
+
+where
+    NAME       = Either a domain class name (case-sensitive) or a
+				 wildcard (*). If you specify the wildcard then
+				 controllers will be generated for all domain classes.
+"""
+
+setDefaultTarget 'generateController'

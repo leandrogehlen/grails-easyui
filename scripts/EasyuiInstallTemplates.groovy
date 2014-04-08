@@ -3,7 +3,7 @@ includeTargets << grailsScript("_GrailsInit")
 target('default': "Installs the artifact and scaffolding templates") {
     depends(checkVersion, parseArguments)
 
-    targetDir = "${basedir}/src/templates/easyui/scaffolding"
+    targetDir = "${basedir}/src/templates/scaffolding"
     overwrite = false
 
     // only if template dir already exists in, ask to overwrite templates
@@ -19,7 +19,7 @@ target('default': "Installs the artifact and scaffolding templates") {
     }
 
     ant.copy(todir: "$targetDir") {
-        fileset(dir: "${easyuiPluginDir}/src/templates/easyui/scaffolding")
+        fileset(dir: "${easyuiPluginDir}/src/templates/scaffolding")
     }
     event("StatusUpdate", ["Templates installed successfully"])
 
