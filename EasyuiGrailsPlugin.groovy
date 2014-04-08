@@ -5,7 +5,7 @@ import org.grails.plugins.easyui.EasyuiDomainClassMarshaller
 
 class EasyuiGrailsPlugin {
 
-    def version = "1.6"
+    def version = "1.7"
     def grailsVersion = "2.0 > *"    
     def dependsOn = [:]
 
